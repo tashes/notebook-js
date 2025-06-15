@@ -22,7 +22,7 @@ export default defineConfig({
     },
     build: {
         lib: {
-            entry: "./main.js",
+            entry: "./main.jsx",
             name: "NotebookJS",
             fileName: (format) => `notebookjs.${format}.js`,
         },

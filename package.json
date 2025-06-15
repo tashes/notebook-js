@@ -1,8 +1,7 @@
 {
-    "name": "notebook-js",
+    "name": "@tamatashwin/notebook-js",
     "description": "This is an open sourced block based text editor that's designed to help with writing notes and dynamic content creation.",
-    "private": true,
-    "version": "0.1.0",
+    "version": "0.1.2",
     "type": "module",
     "main": "dist/notebookjs.umd.js",
     "module": "dist/notebookjs.es.js",
@@ -11,7 +10,8 @@
         ".": {
             "import": "./dist/notebookjs.es.js",
             "require": "./dist/notebookjs.umd.js"
-        }
+        },
+        "./styles.css": "./dist/notebook-js.css"
     },
     "files": [
         "dist"
@@ -57,7 +57,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/tashes/notebook-js.git"
+        "url": "git+https://github.com/tashes/notebook-js.git"
     },
     "bugs": {
         "url": "https://github.com/tashes/notebook-js/issues"

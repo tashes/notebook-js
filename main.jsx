@@ -1,3 +1,5 @@
+import "./src/index.css";
+
 // Notebook
 export { default as NotebookJS } from "./src/components/notebookjs";
 
