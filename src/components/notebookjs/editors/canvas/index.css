@@ -1,0 +1,19 @@
+.excalidraw button[data-testid="main-menu-trigger"] {
+    display: none !important;
+}
+
+.excalidraw label[title="Library"] {
+    display: none !important;
+}
+
+.excalidraw button[title="More tools"] {
+    display: none !important;
+}
+
+.excalidraw label[title="Keep selected tool active after drawing — Q"] {
+    display: none !important;
+}
+
+.excalidraw .App-toolbar__divider {
+    display: none !important;
+}
