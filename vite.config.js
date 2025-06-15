@@ -20,4 +20,20 @@ export default defineConfig({
     define: {
         global: "window",
     },
+    build: {
+        lib: {
+            entry: "./main.js",
+            name: "NotebookJS",
+            fileName: (format) => `notebookjs.${format}.js`,
+        },
+        rollupOptions: {
+            external: ["react", "react-dom"],
+            output: {
+                globals: {
+                    react: "React",
+                    "react-dom": "ReactDOM",
+                },
+            },
+        },
+    },
 });

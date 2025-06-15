@@ -1,8 +1,21 @@
 {
-    "name": "notebookjs",
+    "name": "notebook-js",
+    "description": "This is an open sourced block based text editor that's designed to help with writing notes and dynamic content creation.",
     "private": true,
-    "version": "0.0.0",
+    "version": "0.1.0",
     "type": "module",
+    "main": "dist/notebookjs.umd.js",
+    "module": "dist/notebookjs.es.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/notebookjs.es.js",
+            "require": "./dist/notebookjs.umd.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "dev": "vite",
         "build": "vite build",
@@ -39,5 +52,15 @@
         "eslint-plugin-react-refresh": "^0.4.19",
         "globals": "^16.0.0",
         "vite": "^6.3.5"
-    }
+    },
+    "author": "Ashwin Abraham",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tashes/notebook-js.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tashes/notebook-js/issues"
+    },
+    "homepage": "https://github.com/tashes/notebook-js"
 }
