@@ -14,6 +14,7 @@ npm install @tamatashwin/notebook-js
 
 ## Usage
 ```javascript
+import react, { useState, useCallback } from "react";
 import {
     NotebookJS,
 
@@ -35,6 +36,7 @@ import {
     ImageEditor,
     CanvasEditor
 } from "@tamatashwin/notebook-js"
+import "@tamatashwin/notebook-js/styles.css";
 
 export default function App () {
     let [blocks, setBlocks] = useState([]);
