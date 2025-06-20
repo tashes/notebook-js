@@ -412,6 +412,7 @@ async function convertBlockType({ state, action, addCallback, blocks }) {
 async function executeMenu({
     state,
     action,
+    tools,
     blocks,
     addCallback,
     editors,
@@ -446,7 +447,11 @@ async function executeMenu({
     };
 
     await action.action(
-        { currentBlock: blockObj, state: newState.map((i) => i.toObj()) },
+        {
+            currentBlock: blockObj,
+            state: newState.map((i) => i.toObj()),
+            tools,
+        },
         { modifyBlock, focusOnCurrentBlock, openEditor },
     );
 
