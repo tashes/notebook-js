@@ -8,6 +8,7 @@ import OrderedListBlock from "./components/notebookjs/blocks/ordered-list";
 import ImageBlock from "./components/notebookjs/blocks/image";
 import CanvasBlock from "./components/notebookjs/blocks/canvas";
 import TableBlock from "./components/notebookjs/blocks/table";
+import LatexBlock from "./components/notebookjs/blocks/latex";
 
 import BoldTool from "./components/notebookjs/tools/bold";
 import HighlightTool from "./components/notebookjs/tools/highlight";
@@ -19,6 +20,7 @@ import SetNumberingEditor from "./components/notebookjs/editors/set-numbering";
 import ImageEditor from "./components/notebookjs/editors/image";
 import CanvasEditor from "./components/notebookjs/editors/canvas";
 import TableEditor from "./components/notebookjs/editors/table";
+import LatexEditor from "./components/notebookjs/editors/latex";
 
 import { useState } from "react";
 import { useCallback } from "react";
@@ -36,6 +38,7 @@ function App() {
         ImageBlock,
         CanvasBlock,
         TableBlock,
+        LatexBlock,
     ];
     let tools = [BoldTool, HighlightTool];
     let menus = [EditProps];
@@ -45,6 +48,7 @@ function App() {
         ImageEditor,
         CanvasEditor,
         TableEditor,
+        LatexEditor,
     ];
     return (
         <div className="container mx-auto p-4 max-w-3xl">
