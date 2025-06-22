@@ -26,6 +26,7 @@ import {
     OrderedListBlock,
     ImageBlock,
     CanvasBlock,
+    LatexBlock,
 
     // Import tools
     BoldTool,
@@ -34,7 +35,8 @@ import {
     // Import editors
     SetNumberingEditor,
     ImageEditor,
-    CanvasEditor
+    CanvasEditor,
+    LatexEditor,
 } from "@tamatashwin/notebook-js"
 import "@tamatashwin/notebook-js/styles.css";
 

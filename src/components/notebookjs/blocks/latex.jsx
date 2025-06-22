@@ -87,7 +87,7 @@ const LatexBlock = forwardRef(function (
                                                 key={v.name}
                                                 className="flex items-center gap-2 bg-gray-100"
                                             >
-                                                <div className="w-24 text-center">
+                                                <div className="w-48 text-center">
                                                     <span
                                                         dangerouslySetInnerHTML={{
                                                             __html: v.rendered,

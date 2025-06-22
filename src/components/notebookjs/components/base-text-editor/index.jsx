@@ -15,6 +15,7 @@ import {
     Editor,
     EditorState,
     getDefaultKeyBinding,
+    Modifier,
     RichUtils,
     SelectionState,
 } from "draft-js";
@@ -58,7 +59,28 @@ const BaseTextEditor = forwardRef(function BaseTextEditor(
     // Editor state
     const [editorState, setEditorState] = useState(() => {
         // Create a decorator for tools that need it TODO
-        let decorator = new CompositeDecorator([]);
+        let toolDecorators = tools
+            .filter((tool) => tool.component)
+            .map((tool) => {
+                let styles = (tool.styles || []).map((style) => style.name);
+                let strategy =
+                    typeof tool.strategy === "function"
+                        ? tool.strategy
+                        : (contentBlock, callback, contentState) => {
+                              contentBlock.findEntityRanges((character) => {
+                                  const entityKey = character.getEntity();
+                                  if (!entityKey) return false;
+                                  const entity =
+                                      contentState.getEntity(entityKey);
+                                  return styles.includes(entity.getType());
+                              }, callback);
+                          };
+                return {
+                    strategy,
+                    component: tool.component,
+                };
+            });
+        let decorator = new CompositeDecorator(toolDecorators);
 
         // Create the contentState from the text
         let contentState;
@@ -76,32 +98,62 @@ const BaseTextEditor = forwardRef(function BaseTextEditor(
             // Start with the initial state
             let styleState = state;
 
-            // Apply each style one by one
             iInlineStyles.forEach((styleObj) => {
-                // Create a selection for the range where the style should be applied
+                const { offset, length, style, data } = styleObj;
+
                 const selection = styleState.getSelection().merge({
-                    anchorOffset: styleObj.offset,
-                    focusOffset: styleObj.offset + styleObj.length,
+                    anchorOffset: offset,
+                    focusOffset: offset + length,
                     hasFocus: false,
                 });
 
-                // Create a new state with the selection
                 const stateWithSelection = EditorState.forceSelection(
                     styleState,
                     selection,
                 );
 
-                // Apply the inline style to the selected text
-                const newState = RichUtils.toggleInlineStyle(
-                    stateWithSelection,
-                    styleObj.style,
+                // Check if this style is entity-backed (via tool.component)
+                const isEntityStyle = tools.some(
+                    (tool) =>
+                        tool.component &&
+                        tool.styles?.some((s) => s.name === style),
                 );
 
-                // Update our working state
-                styleState = newState;
+                if (isEntityStyle) {
+                    // Create the entity first
+                    const contentWithEntity = stateWithSelection
+                        .getCurrentContent()
+                        .createEntity(style, "MUTABLE", data || {});
+                    const entityKey =
+                        contentWithEntity.getLastCreatedEntityKey();
+
+                    // Apply the entity to the selection
+                    const withEntity = Modifier.applyEntity(
+                        contentWithEntity,
+                        selection,
+                        entityKey,
+                    );
+
+                    styleState = EditorState.push(
+                        stateWithSelection,
+                        withEntity,
+                        "apply-entity",
+                    );
+                }
+
+                styleState = EditorState.forceSelection(styleState, selection);
+
+                // Regardless of entity, also apply inline style
+                styleState = RichUtils.toggleInlineStyle(styleState, style);
             });
 
-            // Set the final state with all styles applied
+            const selection = styleState.getSelection().merge({
+                anchorOffset: 0,
+                focusOffset: 0,
+                hasFocus: false,
+            });
+
+            styleState = EditorState.forceSelection(styleState, selection);
             state = styleState;
         }
 
@@ -164,6 +216,7 @@ const BaseTextEditor = forwardRef(function BaseTextEditor(
     const styleMap = useMemo(() => {
         return Object.fromEntries(
             tools
+                .filter((tool) => Array.isArray(tool.styles))
                 .map((tool) =>
                     tool.styles.map((style) => [style.name, style.styles]),
                 )
@@ -270,20 +323,64 @@ const BaseTextEditor = forwardRef(function BaseTextEditor(
             // Update the editor state
             setEditorState(state);
 
-            // Extract the text and inline styles
+            // 1. Get content and raw data
             const contentState = state.getCurrentContent();
             const rawContent = convertToRaw(contentState);
             const text = contentState.getPlainText();
+
+            // 2. Build a set of style names associated with entity tools
+            const entityStyleNames = new Set(
+                tools
+                    .filter((tool) => tool.component)
+                    .flatMap((tool) =>
+                        (tool.styles || []).map((style) => style.name),
+                    ),
+            );
+
+            // 3. Extract styles from the first block
             if (rawContent.blocks && rawContent.blocks.length > 0) {
                 const firstBlock = rawContent.blocks[0];
-                const rawInlineStyles = firstBlock.inlineStyleRanges || [];
-                const inlineStyles =
-                    convertFromDraftToInlineStyles(rawInlineStyles);
+                const blockKey = firstBlock.key;
+                const block = contentState.getBlockForKey(blockKey);
+
+                const inlineStyles = [];
+
+                // 3a. Extract entity-based styles (e.g. LINK)
+                block.findEntityRanges(
+                    (character) => {
+                        const entityKey = character.getEntity();
+                        if (!entityKey) return false;
+
+                        const entity = contentState.getEntity(entityKey);
+                        return entityStyleNames.has(entity.getType());
+                    },
+                    (start, end) => {
+                        const entityKey = block.getEntityAt(start);
+                        const entity = contentState.getEntity(entityKey);
+                        inlineStyles.push({
+                            offset: start,
+                            length: end - start,
+                            style: entity.getType(),
+                            data: entity.getData(),
+                        });
+                    },
+                );
+
+                // 3b. Extract raw (non-entity) inline styles (e.g. BOLD, ITALIC)
+                const rawStyleRanges = firstBlock.inlineStyleRanges || [];
+                rawStyleRanges.forEach(({ offset, length, style }) => {
+                    // Only add if not already added via entity styles
+                    if (!entityStyleNames.has(style)) {
+                        inlineStyles.push({ offset, length, style });
+                    }
+                });
+
+                // 4. Dispatch the final result
                 dispatcher({
                     type: "base-text-update",
                     id: id,
                     text: text,
-                    inlineStyles: inlineStyles,
+                    inlineStyles,
                 });
             }
         },
@@ -330,120 +427,137 @@ const BaseTextEditor = forwardRef(function BaseTextEditor(
     );
 
     // Handle Key Commands
-    let handleKeyBinding = useCallback((e) => {
-        let useCmd = isCmdOS();
+    let handleKeyBinding = useCallback(
+        (e) => {
+            let useCmd = isCmdOS();
 
-        // Cmd+Backspace: Delete Block
-        if (
-            e.key === "Backspace" &&
-            (useCmd ? e.metaKey : e.ctrlKey) &&
-            e.shiftKey
-        ) {
-            e.preventDefault();
-            return KC_DELETE_BLOCK;
-        }
-
-        // Cmd+Up: Move block up
-        if (e.key === "ArrowUp" && (useCmd ? e.metaKey : e.ctrl)) {
-            e.preventDefault();
-            return KC_MOVE_BLOCK_UP;
-        }
-
-        // Cmd+Down: Move block down
-        if (e.key === "ArrowDown" && (useCmd ? e.metaKey : e.ctrl)) {
-            e.preventDefault();
-            return KC_MOVE_BLOCK_DOWN;
-        }
-
-        // Shift+Up: Focus up
-        if (e.key === "ArrowUp" && e.shiftKey) {
-            e.preventDefault();
-            return KC_SHIFT_FOCUS_UP;
-        }
-
-        // Shift+Down: Focus down
-        if (e.key === "ArrowDown" && e.shiftKey) {
-            e.preventDefault();
-            return KC_SHIFT_FOCUS_DOWN;
-        }
-
-        for (let i = 0; i < shortcutEvaluatorsLength; i++) {
-            if (shortcutEvaluators[i].evaluator(e) === true) {
+            // Cmd+Backspace: Delete Block
+            if (
+                e.key === "Backspace" &&
+                (useCmd ? e.metaKey : e.ctrlKey) &&
+                e.shiftKey
+            ) {
                 e.preventDefault();
-                return (
-                    KC_CUSTOM_SHORTCUT + ":" + shortcutEvaluators[i].shortcut
-                );
+                return KC_DELETE_BLOCK;
             }
-        }
 
-        return getDefaultKeyBinding(e);
-    }, [shortcutEvaluators, shortcutEvaluatorsLength]);
+            // Cmd+Up: Move block up
+            if (e.key === "ArrowUp" && (useCmd ? e.metaKey : e.ctrl)) {
+                e.preventDefault();
+                return KC_MOVE_BLOCK_UP;
+            }
 
-    let handleKeyCommand = useCallback((command) => {
-        if (command === KC_DELETE_BLOCK) {
-            window.getSelection()?.removeAllRanges();
-            dispatcher({
-                type: "block-delete",
-                id: id,
-            });
-            return "handled";
-        }
+            // Cmd+Down: Move block down
+            if (e.key === "ArrowDown" && (useCmd ? e.metaKey : e.ctrl)) {
+                e.preventDefault();
+                return KC_MOVE_BLOCK_DOWN;
+            }
 
-        if (command === KC_MOVE_BLOCK_UP) {
-            window.getSelection()?.removeAllRanges();
-            dispatcher({
-                type: "block-move",
-                dir: "up",
-                id: id,
-            });
-            return "handled";
-        }
+            // Shift+Up: Focus up
+            if (e.key === "ArrowUp" && e.shiftKey) {
+                e.preventDefault();
+                return KC_SHIFT_FOCUS_UP;
+            }
 
-        if (command === KC_MOVE_BLOCK_DOWN) {
-            window.getSelection()?.removeAllRanges();
-            dispatcher({
-                type: "block-move",
-                dir: "down",
-                id: id,
-            });
-            return "handled";
-        }
+            // Shift+Down: Focus down
+            if (e.key === "ArrowDown" && e.shiftKey) {
+                e.preventDefault();
+                return KC_SHIFT_FOCUS_DOWN;
+            }
 
-        if (command === KC_SHIFT_FOCUS_UP) {
-            window.getSelection()?.removeAllRanges();
-            dispatcher({
-                type: "focus-move",
-                dir: "up",
-                id: id,
-            });
-            return "handled";
-        }
+            for (let i = 0; i < shortcutEvaluatorsLength; i++) {
+                if (shortcutEvaluators[i].evaluator(e) === true) {
+                    e.preventDefault();
+                    return (
+                        KC_CUSTOM_SHORTCUT +
+                        ":" +
+                        shortcutEvaluators[i].shortcut
+                    );
+                }
+            }
 
-        if (command === KC_SHIFT_FOCUS_DOWN) {
-            window.getSelection()?.removeAllRanges();
-            dispatcher({
-                type: "focus-move",
-                dir: "down",
-                id: id,
-            });
-            return "handled";
-        }
+            return getDefaultKeyBinding(e);
+        },
+        [shortcutEvaluators, shortcutEvaluatorsLength],
+    );
 
-        if (command.split(":")[0] === KC_CUSTOM_SHORTCUT) {
-            let evaluator = shortcutEvaluators.find(
-                (shortcut) => shortcut.shortcut === command.split(":")[1],
-            );
-            evaluator.action({
-                id: id,
-                dispatcher: dispatcher,
-                editorState: editorState,
-                setEditorState: setEditorState,
-                props: props,
-                blockType: blockType,
-                references: references,
-            });
-        }
-    }, [shortcutEvaluators, dispatcher, id, editorState, setEditorState, props, blockType, references]);
+    let handleKeyCommand = useCallback(
+        (command) => {
+            if (command === KC_DELETE_BLOCK) {
+                window.getSelection()?.removeAllRanges();
+                dispatcher({
+                    type: "block-delete",
+                    id: id,
+                });
+                return "handled";
+            }
+
+            if (command === KC_MOVE_BLOCK_UP) {
+                window.getSelection()?.removeAllRanges();
+                dispatcher({
+                    type: "block-move",
+                    dir: "up",
+                    id: id,
+                });
+                return "handled";
+            }
+
+            if (command === KC_MOVE_BLOCK_DOWN) {
+                window.getSelection()?.removeAllRanges();
+                dispatcher({
+                    type: "block-move",
+                    dir: "down",
+                    id: id,
+                });
+                return "handled";
+            }
+
+            if (command === KC_SHIFT_FOCUS_UP) {
+                window.getSelection()?.removeAllRanges();
+                dispatcher({
+                    type: "focus-move",
+                    dir: "up",
+                    id: id,
+                });
+                return "handled";
+            }
+
+            if (command === KC_SHIFT_FOCUS_DOWN) {
+                window.getSelection()?.removeAllRanges();
+                dispatcher({
+                    type: "focus-move",
+                    dir: "down",
+                    id: id,
+                });
+                return "handled";
+            }
+
+            if (command.split(":")[0] === KC_CUSTOM_SHORTCUT) {
+                let evaluator = shortcutEvaluators.find(
+                    (shortcut) => shortcut.shortcut === command.split(":")[1],
+                );
+                evaluator.action({
+                    id: id,
+                    dispatcher: dispatcher,
+                    editorState: editorState,
+                    setEditorState: setEditorState,
+                    props: props,
+                    blockType: blockType,
+                    references: references,
+                });
+            }
+        },
+        [
+            shortcutEvaluators,
+            dispatcher,
+            id,
+            editorState,
+            setEditorState,
+            props,
+            blockType,
+            references,
+        ],
+    );
 
     useImperativeHandle(ref, () => ({
         focusAtStart: () => {

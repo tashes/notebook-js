@@ -11,7 +11,12 @@ import TableBlock from "./components/notebookjs/blocks/table";
 import LatexBlock from "./components/notebookjs/blocks/latex";
 
 import BoldTool from "./components/notebookjs/tools/bold";
+import ItalicTool from "./components/notebookjs/tools/italic";
+import UnderlineTool from "./components/notebookjs/tools/underline";
 import HighlightTool from "./components/notebookjs/tools/highlight";
+import SuperscriptTool from "./components/notebookjs/tools/superscript";
+import SubscriptTool from "./components/notebookjs/tools/subscript";
+import LinkTool from "./components/notebookjs/tools/link";
 
 import EditProps from "./components/notebookjs/menu/edit-props";
 
@@ -26,7 +31,37 @@ import { useState } from "react";
 import { useCallback } from "react";
 
 function App() {
-    let [blocks, setBlocks] = useState([]);
+    let [blocks, setBlocks] = useState([
+        {
+            id: "8a4e9943c3e36f0ee6f15967",
+            blockid: "B6713e858D",
+            type: "paragraph",
+            data: {
+                text: "xcvoioi sdfs dsdf s tgh fghfgh ",
+                inlineStyles: [
+                    {
+                        offset: 0,
+                        length: 3,
+                        style: "LINK",
+                        data: {
+                            url: "http://localhost:5173",
+                        },
+                    },
+                    {
+                        offset: 0,
+                        length: 7,
+                        style: "BOLD",
+                    },
+                    {
+                        offset: 8,
+                        length: 5,
+                        style: "BOLD",
+                    },
+                ],
+            },
+            props: {},
+        },
+    ]);
     let handleChange = useCallback((newBlocks) => setBlocks(newBlocks), []);
 
     let blockDefs = [
@@ -40,7 +75,15 @@ function App() {
         TableBlock,
         LatexBlock,
     ];
-    let tools = [BoldTool, HighlightTool];
+    let tools = [
+        BoldTool,
+        ItalicTool,
+        UnderlineTool,
+        HighlightTool,
+        SuperscriptTool,
+        SubscriptTool,
+        LinkTool,
+    ];
     let menus = [EditProps];
     let editors = [
         PropertiesEditor,
@@ -56,6 +99,7 @@ function App() {
 
             <div className="mb-6 rounded-md border border-gray-300">
                 <NotebookJS
+                    initialBlocks={blocks}
                     onChange={handleChange}
                     readOnly={false}
                     blocks={blockDefs}

@@ -34,8 +34,30 @@ const BasicTextEditor = forwardRef(
         ref,
     ) => {
         let createFromTextAndInlineStyles = (t, iS) => {
-            // Create a decorator for tools that need it TODO
-            let decorator = new CompositeDecorator([]);
+            // Create a decorator for tools that need it
+            let toolDecorators = tools
+                .filter((tool) => tool.component)
+                .map((tool) => {
+                    let styles = tool?.styles.map((tool) => tool.name) || [];
+                    let strategy =
+                        typeof tool.strategy === "function"
+                            ? tool.strategy
+                            : (contentBlock, callback, contentState) => {
+                                  contentBlock.findEntityRanges((character) => {
+                                      const entityKey = character.getEntity();
+                                      if (!entityKey) return false;
+
+                                      const entity =
+                                          contentState.getEntity(entityKey);
+                                      return styles.includes(entity.getType());
+                                  }, callback);
+                              };
+                    return {
+                        strategy,
+                        component: tool.component,
+                    };
+                });
+            let decorator = new CompositeDecorator(toolDecorators);
 
             // Create the contentState from the text
             let contentState;
@@ -158,9 +180,11 @@ const BasicTextEditor = forwardRef(
         // Auto-generate style map from tools
         const styleMap = useMemo(() => {
             return Object.fromEntries(
-                tools.flatMap((tool) =>
-                    tool.styles.map((style) => [style.name, style.styles]),
-                ),
+                tools
+                    .filter((tool) => tool.styles)
+                    .flatMap((tool) =>
+                        tool.styles.map((style) => [style.name, style.styles]),
+                    ),
             );
         }, [tools]);
 

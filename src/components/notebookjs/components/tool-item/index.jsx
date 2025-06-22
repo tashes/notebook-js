@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 export default function ToolItem({
     tool = {},
     currentStyles = OrderedSet([]),
-    toggleFn = () => {},
+    toggleFn = async () => {},
 }) {
     let [showGroup, setShowGroup] = useState(false);
     const timeoutRef = useRef(null);
@@ -25,19 +25,31 @@ export default function ToolItem({
         .map((style) => style.name)
         .filter((style) => currentStyles.has(style));
 
-    let handleToggle = (e) => {
+    let handleToggle = async (e) => {
         e.preventDefault();
+        const styleName = tool.styles[0]?.name;
+        if (!styleName) return;
+
         if (isActive) {
-            toggleFn(...currentlyOnStyles);
+            await toggleFn({
+                tool,
+                styles: currentlyOnStyles,
+            });
         } else {
             if (tool.styles.length > 0)
-                toggleFn(...currentlyOnStyles, tool.styles[0].name);
+                await toggleFn({
+                    tool,
+                    styles: [...currentlyOnStyles, tool.styles[0].name],
+                });
         }
     };
 
-    let handleSpecificToggle = (e, style) => {
+    let handleSpecificToggle = async (e, style) => {
         e.preventDefault();
-        toggleFn(...currentlyOnStyles, style.name);
+        await toggleFn({
+            tool,
+            styles: [...currentlyOnStyles, style.name],
+        });
     };
 
     let handleMouseEnter = () => {
