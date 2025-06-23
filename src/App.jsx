@@ -31,37 +31,7 @@ import { useState } from "react";
 import { useCallback } from "react";
 
 function App() {
-    let [blocks, setBlocks] = useState([
-        {
-            id: "8a4e9943c3e36f0ee6f15967",
-            blockid: "B6713e858D",
-            type: "paragraph",
-            data: {
-                text: "xcvoioi sdfs dsdf s tgh fghfgh ",
-                inlineStyles: [
-                    {
-                        offset: 0,
-                        length: 3,
-                        style: "LINK",
-                        data: {
-                            url: "http://localhost:5173",
-                        },
-                    },
-                    {
-                        offset: 0,
-                        length: 7,
-                        style: "BOLD",
-                    },
-                    {
-                        offset: 8,
-                        length: 5,
-                        style: "BOLD",
-                    },
-                ],
-            },
-            props: {},
-        },
-    ]);
+    let [blocks, setBlocks] = useState([]);
     let handleChange = useCallback((newBlocks) => setBlocks(newBlocks), []);
 
     let blockDefs = [

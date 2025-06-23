@@ -13,6 +13,7 @@ import {
     convertToRaw,
     ContentState,
     CompositeDecorator,
+    Modifier,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 
@@ -33,12 +34,12 @@ const BasicTextEditor = forwardRef(
         },
         ref,
     ) => {
-        let createFromTextAndInlineStyles = (t, iS) => {
-            // Create a decorator for tools that need it
+        const createFromTextAndInlineStyles = (iText, iInlineStyles) => {
+            // Create a decorator for tools that need it TODO
             let toolDecorators = tools
                 .filter((tool) => tool.component)
                 .map((tool) => {
-                    let styles = tool?.styles.map((tool) => tool.name) || [];
+                    let styles = (tool.styles || []).map((style) => style.name);
                     let strategy =
                         typeof tool.strategy === "function"
                             ? tool.strategy
@@ -46,7 +47,6 @@ const BasicTextEditor = forwardRef(
                                   contentBlock.findEntityRanges((character) => {
                                       const entityKey = character.getEntity();
                                       if (!entityKey) return false;
-
                                       const entity =
                                           contentState.getEntity(entityKey);
                                       return styles.includes(entity.getType());
@@ -62,7 +62,7 @@ const BasicTextEditor = forwardRef(
             // Create the contentState from the text
             let contentState;
             try {
-                contentState = ContentState.createFromText(t || "");
+                contentState = ContentState.createFromText(iText || "");
             } catch (e) {
                 contentState = ContentState.createFromText("");
             }
@@ -71,45 +71,69 @@ const BasicTextEditor = forwardRef(
             let state = EditorState.createWithContent(contentState, decorator);
 
             // Apply inline styles if they exist
-            if (iS && iS.length > 0) {
+            if (iInlineStyles && iInlineStyles.length > 0) {
                 // Start with the initial state
                 let styleState = state;
 
-                // Apply each style one by one
-                iS.forEach((styleObj) => {
-                    // Create a selection for the range where the style should be applied
+                iInlineStyles.forEach((styleObj) => {
+                    const { offset, length, style, data } = styleObj;
+
                     const selection = styleState.getSelection().merge({
-                        anchorOffset: styleObj.offset,
-                        focusOffset: styleObj.offset + styleObj.length,
+                        anchorOffset: offset,
+                        focusOffset: offset + length,
                         hasFocus: false,
                     });
 
-                    // Create a new state with the selection
                     const stateWithSelection = EditorState.forceSelection(
                         styleState,
                         selection,
                     );
 
-                    // Apply the inline style to the selected text
-                    const newState = RichUtils.toggleInlineStyle(
-                        stateWithSelection,
-                        styleObj.style,
+                    // Check if this style is entity-backed (via tool.component)
+                    const isEntityStyle = tools.some(
+                        (tool) =>
+                            tool.component &&
+                            tool.styles?.some((s) => s.name === style),
                     );
 
-                    // Update our working state
-                    styleState = newState;
+                    if (isEntityStyle) {
+                        // Create the entity first
+                        const contentWithEntity = stateWithSelection
+                            .getCurrentContent()
+                            .createEntity(style, "MUTABLE", data || {});
+                        const entityKey =
+                            contentWithEntity.getLastCreatedEntityKey();
+
+                        // Apply the entity to the selection
+                        const withEntity = Modifier.applyEntity(
+                            contentWithEntity,
+                            selection,
+                            entityKey,
+                        );
+
+                        styleState = EditorState.push(
+                            stateWithSelection,
+                            withEntity,
+                            "apply-entity",
+                        );
+                    }
+
+                    styleState = EditorState.forceSelection(
+                        styleState,
+                        selection,
+                    );
+
+                    // Regardless of entity, also apply inline style
+                    styleState = RichUtils.toggleInlineStyle(styleState, style);
                 });
 
-                // Reset selection
-                let selection = styleState.getSelection().merge({
+                const selection = styleState.getSelection().merge({
                     anchorOffset: 0,
                     focusOffset: 0,
                     hasFocus: false,
                 });
 
                 styleState = EditorState.forceSelection(styleState, selection);
-
-                // Set the final state with all styles applied
                 state = styleState;
             }
 
