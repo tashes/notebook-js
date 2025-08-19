@@ -4,6 +4,12 @@ import { X } from "lucide-react";
 import { Excalidraw } from "@excalidraw/excalidraw";
 import "@excalidraw/excalidraw/index.css";
 import "./index.css";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "../../ui/dialog";
 
 export default function CanvasEditor({
     data = {},
@@ -40,58 +46,56 @@ export default function CanvasEditor({
 
     return (
         <>
-            {/* Top-right controls */}
-            <div className="absolute top-4 right-4 flex space-x-2 z-20">
-                <Button
-                    variant="white"
-                    size="icon"
-                    className="cursor-pointer"
+            <Dialog open={true} onOpenChange={handleClose}>
+                <DialogContent
+                    className="sm:max-w-[800px] overflow-y-auto z-50 bg-white"
                     onClick={(e) => {
                         e.stopPropagation();
-                        handleClose();
                     }}
                 >
-                    <X className="w-5 h-5" />
-                </Button>
-            </div>
+                    <DialogHeader>
+                        <DialogTitle>Edit Canvas</DialogTitle>
+                    </DialogHeader>
 
-            {/* Excalidraw canvas */}
-            <div
-                className="w-[90vw] h-[90vh] border"
-                onClick={(e) => e.stopPropagation()}
-                onMouseDown={(e) => e.stopPropagation()}
-                onMouseUp={(e) => e.stopPropagation()}
-                onPointerDown={(e) => e.stopPropagation()}
-            >
-                <Excalidraw
-                    ref={excalidrawRef}
-                    initialData={{
-                        elements,
-                        appState,
-                        files,
-                        scrollToContent: true,
-                    }}
-                    onChange={(elements, appState, files) => {
-                        // shallow clone the elements array to ensure state updates on deletion
-                        setElements(elements);
-                        setAppState(appState);
-                        setFiles(files);
-                    }}
-                    isCollaborating={false}
-                    UIOptions={{
-                        canvasActions: {
-                            changeViewBackgroundColor: false,
-                            clearCanvas: false,
-                            export: false,
-                            loadScene: false,
-                            saveToActiveFile: false,
-                            toggleTheme: false,
-                            saveAsImage: false,
-                        },
-                        welcomeScreen: false,
-                    }}
-                />
-            </div>
+                    {/* Excalidraw canvas */}
+                    <div
+                        className="w-full h-[80vh] border"
+                        onClick={(e) => e.stopPropagation()}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onMouseUp={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                    >
+                        <Excalidraw
+                            ref={excalidrawRef}
+                            initialData={{
+                                elements,
+                                appState,
+                                files,
+                                scrollToContent: true,
+                            }}
+                            onChange={(elements, appState, files) => {
+                                // shallow clone the elements array to ensure state updates on deletion
+                                setElements(elements);
+                                setAppState(appState);
+                                setFiles(files);
+                            }}
+                            isCollaborating={false}
+                            UIOptions={{
+                                canvasActions: {
+                                    changeViewBackgroundColor: false,
+                                    clearCanvas: false,
+                                    export: false,
+                                    loadScene: false,
+                                    saveToActiveFile: false,
+                                    toggleTheme: false,
+                                    saveAsImage: false,
+                                },
+                                welcomeScreen: false,
+                            }}
+                        />
+                    </div>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }
