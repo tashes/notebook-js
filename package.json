@@ -1,15 +1,16 @@
 {
     "name": "@tamatashwin/notebook-js",
     "description": "This is an open sourced block based text editor that's designed to help with writing notes and dynamic content creation.",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "type": "module",
     "main": "dist/notebookjs.umd.js",
     "module": "dist/notebookjs.es.js",
-    "types": "dist/index.d.ts",
+    "types": "./index.d.ts",
     "exports": {
         ".": {
             "import": "./dist/notebookjs.es.js",
-            "require": "./dist/notebookjs.umd.js"
+            "require": "./dist/notebookjs.umd.js",
+            "types": "./index.d.ts"
         },
         "./styles.css": "./dist/notebook-js.css"
     },
