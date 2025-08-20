@@ -29,6 +29,7 @@ import PropertiesEditor from "./editors/properties";
 import Editor from "./components/editor";
 import NotebookBlock from "./components/notebook-block";
 import { createPortal } from "react-dom";
+import { Button } from "./ui/button";
 
 // Default definitions.  These correspond to the previous defaults but have
 // been renamed to clarify their purpose.

@@ -47,9 +47,10 @@ export default function App () {
     return (
         <div className="mb-6 rounded-md border border-gray-300">
             <NotebookJS
+                blocks={blocks}
                 onChange={handleChange}
                 readOnly={false}
-                blocks={[
+                blockTypes={[
                     ParagraphBlock,
                     HeadingBlock,
                     SubheadingBlock,
