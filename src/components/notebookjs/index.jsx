@@ -161,7 +161,8 @@ export default function NotebookJS({
                 refsMap.current.delete(key);
             }
         }
-        // Execute and clear callbacks registered by reducer actions
+        // Execute callbacks registered by reducer actions. These callbacks may
+        // perform focus changes or other side effects after the state update.
         callbacks.forEach((cb) =>
             cb({
                 state: notebookBlocks,
@@ -174,7 +175,12 @@ export default function NotebookJS({
                 initProps,
             }),
         );
-        setCallbacks([]);
+        // Only reset the callback queue when there were callbacks to run.
+        // Invoking setCallbacks with a new empty array each render when the
+        // array is already empty would cause an infinite render loop.
+        if (callbacks.length > 0) {
+            setCallbacks([]);
+        }
     }, [notebookBlocks, callbacks, blockTypes, tools, menuItems, openReference, searchReferences, initProps]);
 
     // Propagate changes to parent.  Only fire `onChange` when the serialised
