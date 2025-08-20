@@ -76,9 +76,6 @@ export default function NotebookJS({
 
     // Callbacks
     const refsMap = useRef(new Map());
-    const [callbacks, setCallbacks] = useState([]);
-    let addCallback = (cb) => setCallbacks([...callbacks, cb]);
-
     // Controlled mode: derive block instances from props.blocks
     const notebookBlocks = blocks.map((b) => new Block(b));
 
@@ -155,9 +152,8 @@ export default function NotebookJS({
         }
     }, [blocks]);
 
-
     let shortcuts = useMemo(() => {
-    let blockTypeShortcuts = blockTypes
+        let blockTypeShortcuts = blockTypes
             .filter((blockType) => blockType.shortcut)
             .map((blockType) => ({
                 shortcut: blockType.shortcut,
@@ -207,7 +203,11 @@ export default function NotebookJS({
                                     onChange([newBlock.toObj()]);
                                 }}
                             >
-                                Create {blockTypes[0].label || blockTypes[0].name || "block"} block
+                                Create{" "}
+                                {blockTypes[0].label ||
+                                    blockTypes[0].name ||
+                                    "block"}{" "}
+                                block
                             </Button>
                         </div>
                     ) : (

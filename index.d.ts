@@ -100,7 +100,6 @@ export interface NotebookJSProps {
     readOnly?: boolean;
     blocks?: any[]; // Controlled blocks data
     onChange?: (blocks: any[]) => void; // Fired on block change
-    initialBlocks?: any[]; // Uncontrolled initial blocks
     blockTypes?: BlockComponent[]; // List of available block types
     tools?: ToolConfig[];
     editors?: EditorComponent[];
