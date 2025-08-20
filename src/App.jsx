@@ -1,3 +1,9 @@
+// Example application demonstrating the controlled NotebookJS component.  This
+// file is based on the original example from the upstream project but has
+// been updated to use the new controlled API.  It maintains a stateful
+// `blocks` array and passes it into NotebookJS via the `blocks` prop.  When
+// NotebookJS reports changes via `onChange`, we update our local state.
+
 import NotebookJS from "./components/notebookjs";
 
 import ParagraphBlock from "./components/notebookjs/blocks/paragraph";
@@ -27,10 +33,11 @@ import CanvasEditor from "./components/notebookjs/editors/canvas";
 import TableEditor from "./components/notebookjs/editors/table";
 import LatexEditor from "./components/notebookjs/editors/latex";
 
-import { useState } from "react";
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
 
 function App() {
+    // Maintain our controlled block list.  Initially empty; NotebookJS will
+    // display a button prompting to create the first block.
     let [blocks, setBlocks] = useState([]);
     let handleChange = useCallback((newBlocks) => setBlocks(newBlocks), []);
 
@@ -69,10 +76,10 @@ function App() {
 
             <div className="mb-6 rounded-md border border-gray-300">
                 <NotebookJS
-                    initialBlocks={blocks}
+                    blocks={blocks}
                     onChange={handleChange}
                     readOnly={false}
-                    blocks={blockDefs}
+                    blockTypes={blockDefs}
                     tools={tools}
                     menuItems={menus}
                     editors={editors}
