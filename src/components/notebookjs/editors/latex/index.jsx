@@ -257,7 +257,7 @@ export default function LatexEditor({
                 </div>
                 <div className="">
                     <div className="font-medium mb-2">Variables</div>
-                    <div className="overflow-auto max-h-[150px] pr-2">
+                    <div className="overflow-auto max-h-[300px] pr-2">
                         <div className="grid grid-cols-1 gap-4 p-2">
                             {renderedVariables.length > 0 &&
                                 renderedVariables.map((v, i) => (

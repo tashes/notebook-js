@@ -19,6 +19,7 @@ import {
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import Icon from "../../ui/icon";
+import { Dialog, DialogContent } from "../../ui/dialog";
 
 export default function TableEditor({
     data = {},
@@ -411,7 +412,7 @@ export default function TableEditor({
     };
 
     return (
-        <div className="fixed inset-4 overflow-hidden flex flex-col z-50 shadow-xl">
+        <div className="flex flex-col justify-start fixed top-0 left-0 p-4 h-full w-full max-w-screen overflow-hidden">
             <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-white rounded-lg w-full">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

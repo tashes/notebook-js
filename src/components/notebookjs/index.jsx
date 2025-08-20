@@ -20,6 +20,7 @@ import EditProps from "./menu/edit-props";
 import PropertiesEditor from "./editors/properties";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 const defaultBlocks = [ParagraphBlock];
 const defaultTools = [BoldTool];
@@ -184,7 +185,7 @@ export default function NotebookJS({
     return (
         <>
             <div className="notebook-js rounded-md">
-                <div className="blocks-container max-w-full">
+                <div className="blocks-container w-full">
                     {notebookBlocks.map((block) => (
                         <NotebookBlock
                             key={block.id}
@@ -204,18 +205,20 @@ export default function NotebookJS({
                     ))}
                 </div>
             </div>
-            {isEditorOpen && (
-                <Editor
-                    editors={editors}
-                    current={editorData.name}
-                    data={editorData.data}
-                    currentBlock={notebookBlocks
-                        .find((b) => b.id === editorData.currentBlockId)
-                        ?.toObj()}
-                    close={editorFns.closeEditor}
-                    modifyBlock={modifyBlock}
-                />
-            )}
+            {isEditorOpen &&
+                createPortal(
+                    <Editor
+                        editors={editors}
+                        current={editorData.name}
+                        data={editorData.data}
+                        currentBlock={notebookBlocks
+                            .find((b) => b.id === editorData.currentBlockId)
+                            ?.toObj()}
+                        close={editorFns.closeEditor}
+                        modifyBlock={modifyBlock}
+                    />,
+                    document.body,
+                )}
         </>
     );
 }

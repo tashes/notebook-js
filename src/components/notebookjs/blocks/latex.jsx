@@ -75,7 +75,7 @@ const LatexBlock = forwardRef(function (
                             <Accordion
                                 type="single"
                                 collapsible
-                                className="w-full"
+                                className="w-full hover:bg-gray-100 px-8 rounded-2xl"
                             >
                                 <AccordionItem value="info">
                                     <AccordionTrigger>

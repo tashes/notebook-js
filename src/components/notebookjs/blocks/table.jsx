@@ -75,8 +75,8 @@ const TableBlock = forwardRef(function (
     }
 
     return (
-        <div className="flex-grow mx-2">
-            <div className="my-2 relative">
+        <div className="flex-grow mx-2 overflow-hidden">
+            <div className="my-2 relative overflow-auto">
                 {data.rows.length > 0 ? (
                     <table
                         className="w-full border-collapse min-w-max text-gray-600 cursor-pointer"
