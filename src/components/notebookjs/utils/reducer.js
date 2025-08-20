@@ -1,6 +1,20 @@
+// This file contains a near‑verbatim copy of the reducer implementation from
+// the original NotebookJS project (https://github.com/tashes/notebook-js).
+// It has been adapted slightly to support a controlled component model.  In
+// particular, the `deleteBlock` function no longer forces the editor to
+// always contain at least one block; if the final block is deleted the
+// resulting state will be an empty array.  Focus management for deletions has
+// been updated accordingly.
+
 import { Block } from "../data/block";
 import { generateBlockId, generateId } from "./ids";
 
+/**
+ * Reducer entry point.  Dispatches actions to the appropriate handler and
+ * returns either a new state array synchronously or a promise that resolves
+ * with the new state.  See individual handler implementations for
+ * documentation.
+ */
 export async function reducer(p) {
     let {
         state,
@@ -19,44 +33,36 @@ export async function reducer(p) {
     } = p;
     switch (action.type) {
         case "block-type-conversion":
-            // console.log(`Converting ${action.id} ${action.oldBlockType} into ${action.newBlockType}`);
             return await convertBlockType({
                 ...p,
             });
         case "menu-execution":
-            // console.log(`Running ${action.name} (${action.action}) for ${action.id}`,);
             return await executeMenu({
                 ...p,
             });
         case "base-text-update":
-            // console.log(`Updating base text for ${action.id} with ${action.text} and ${JSON.stringify(action.inlineStyles, null, 4)}`,);
             return await baseTextUpdate({
                 ...p,
             });
         case "block-delete": {
-            // console.log(`Delete block ${action.id}`);
             return await deleteBlock({
                 ...p,
             });
         }
         case "block-move":
-            // console.log(`Moving block ${action.id} in direction ${action.dir}`);
             return await moveBlock({
                 ...p,
             });
         case "focus-move":
-            // console.log(`Moving focus ${action.dir} from ${action.id}`);
             return await moveFocus({
                 ...p,
             });
         case "create-new-block": {
-            // console.log(`Creating a new ${action.blockType} block ${action.position} ${action.id}`);
             return await createNewBlock({
                 ...p,
             });
         }
         case "modify-raw-block": {
-            // console.log(`Modifying raw block: ${JSON.stringify(action.block)}`);
             return await modifyRawBlock({
                 ...p,
             });
@@ -68,6 +74,8 @@ export async function reducer(p) {
     return state;
 }
 
+// Create a new block immediately before or after the specified block.  If no
+// `id` is provided the new block is appended to the end of the state.
 async function createNewBlock({
     state,
     action,
@@ -92,8 +100,7 @@ async function createNewBlock({
         return [...state, newBlock];
     }
     // Compute insertion index: before or after current
-    let insertIndex =
-        action.position === "before" ? currentIndex : currentIndex + 1;
+    let insertIndex = action.position === "before" ? currentIndex : currentIndex + 1;
     // Move focus to new Block
     addCallback(({ refsMap: newRefs }) => {
         const ref = newRefs.get(newBlock.id);
@@ -102,11 +109,7 @@ async function createNewBlock({
         }
     });
     // New state
-    let newState = [
-        ...state.slice(0, insertIndex),
-        newBlock,
-        ...state.slice(insertIndex),
-    ];
+    let newState = [...state.slice(0, insertIndex), newBlock, ...state.slice(insertIndex)];
     // Lifecycle hooks
     for (let i = 0; i < blocks.length; i++) {
         let blockD = blocks[i];
@@ -142,54 +145,47 @@ async function createNewBlock({
     return newState;
 }
 
+// Delete a block by its id.  If the final block is removed the resulting
+// state will be empty.  Focus is moved to either the next or previous
+// remaining block when possible.
 async function deleteBlock({ state, action, blocks, initProps, addCallback }) {
     let index = state.findIndex((block) => block.id === action.id);
     let currentBlock = state[index];
     // Return state if block id is not found
     if (index === -1) return state;
-    // Check if it's the only block
-    let newState = state;
-    if (state.length === 1) {
-        let newBlock = new Block({
-            id: generateId(),
-            blockid: generateBlockId(),
-            type: blocks[0].type,
-            data: blocks[0].init(),
-            props: initProps(),
-        });
-        newState = [...newState, newBlock];
-    }
+    // Remove the block from state
+    let newState = state.filter((block) => block.id !== action.id);
     const newStateLength = newState.length;
-    addCallback(({ refsMap: newRefs }) => {
-        // Manage focus - move to the next block, if last block then move to the previous block
-        if (index < newStateLength - 1) {
-            // Move to the next block
-            const nextBlockId = newState[index].id;
-            const ref = newRefs.get(nextBlockId);
-            if (ref && ref.current) {
-                ref.current.focusAtStart();
+    // Manage focus only when there is at least one remaining block
+    if (newStateLength > 0) {
+        addCallback(({ refsMap: newRefs }) => {
+            // If the removed block was not the last in the original state then
+            // focus the next block; otherwise focus the new last block.
+            if (index < newStateLength) {
+                const nextBlockId = newState[index].id;
+                const ref = newRefs.get(nextBlockId);
+                if (ref && ref.current) {
+                    ref.current.focusAtStart();
+                }
+            } else {
+                const prevBlockId = newState[newStateLength - 1].id;
+                const ref = newRefs.get(prevBlockId);
+                if (ref && ref.current) {
+                    ref.current.focusAtEnd();
+                }
             }
-        } else {
-            // Move to the previous block
-            const prevBlockId = newState[index - 1].id;
-            const ref = newRefs.get(prevBlockId);
-            if (ref && ref.current) {
-                ref.current.focusAtEnd();
-            }
-        }
-    });
-    // Filter state without current block
-    newState = newState.filter((block) => block.id !== action.id);
+        });
+    }
     // Lifecycle hooks
     for (let i = 0; i < blocks.length; i++) {
         let blockD = blocks[i];
         if (typeof blockD.onDeleteBlock === "function") {
             let modifyBlock = (nBlock) => {
-                let index = newState.findIndex((b) => b.id === nBlock.id);
+                let idx = newState.findIndex((b) => b.id === nBlock.id);
                 newState = [
-                    ...newState.slice(0, index),
+                    ...newState.slice(0, idx),
                     new Block(nBlock),
-                    ...newState.slice(index + 1),
+                    ...newState.slice(idx + 1),
                 ];
             };
             let focusOnCurrentBlock = () => {};
@@ -209,6 +205,8 @@ async function deleteBlock({ state, action, blocks, initProps, addCallback }) {
     return newState;
 }
 
+// Update base text and inline styles within a block.  Returns the updated
+// state and runs lifecycle hooks for interested block types.
 async function baseTextUpdate({ state, blocks, action, addCallback }) {
     let block = state.find((b) => b.id === action.id);
     let blockIndex = state.findIndex((b) => b.id === action.id);
@@ -221,21 +219,17 @@ async function baseTextUpdate({ state, blocks, action, addCallback }) {
             inlineStyles: action.inlineStyles,
         },
     });
-    let newState = [
-        ...state.slice(0, blockIndex),
-        newBlock,
-        ...state.slice(blockIndex + 1),
-    ];
+    let newState = [...state.slice(0, blockIndex), newBlock, ...state.slice(blockIndex + 1)];
     // Lifecycle hooks
     for (let i = 0; i < blocks.length; i++) {
         let blockD = blocks[i];
         if (typeof blockD.onBaseTextUpdate === "function") {
             let modifyBlock = (nBlock) => {
-                let index = newState.findIndex((b) => b.id === nBlock.id);
+                let idx = newState.findIndex((b) => b.id === nBlock.id);
                 newState = [
-                    ...newState.slice(0, index),
+                    ...newState.slice(0, idx),
                     new Block(nBlock),
-                    ...newState.slice(index + 1),
+                    ...newState.slice(idx + 1),
                 ];
             };
             let focusOnCurrentBlock = () => {
@@ -260,6 +254,8 @@ async function baseTextUpdate({ state, blocks, action, addCallback }) {
     return newState;
 }
 
+// Move a block up or down within the state array.  Focus is restored to the
+// original position after the move completes.
 async function moveBlock({ state, action, blocks, addCallback, refsMap }) {
     let blockIndex = state.findIndex((b) => b.id === action.id);
     let ref = refsMap.get(action.id);
@@ -290,11 +286,11 @@ async function moveBlock({ state, action, blocks, addCallback, refsMap }) {
         let blockD = blocks[i];
         if (typeof blockD.onMoveBlock === "function") {
             let modifyBlock = (nBlock) => {
-                let index = newState.findIndex((b) => b.id === nBlock.id);
+                let idx = newState.findIndex((b) => b.id === nBlock.id);
                 newState = [
-                    ...newState.slice(0, index),
+                    ...newState.slice(0, idx),
                     new Block(nBlock),
-                    ...newState.slice(index + 1),
+                    ...newState.slice(idx + 1),
                 ];
             };
             let focusOnCurrentBlock = () => {
@@ -305,9 +301,7 @@ async function moveBlock({ state, action, blocks, addCallback, refsMap }) {
             };
             await blockD.onMoveBlock(
                 {
-                    currentBlock: newState
-                        .find((b) => b.id === action.id)
-                        .toObj(),
+                    currentBlock: newState.find((b) => b.id === action.id).toObj(),
                     state: newState.map((a) => a.toObj()),
                     action,
                 },
@@ -321,6 +315,8 @@ async function moveBlock({ state, action, blocks, addCallback, refsMap }) {
     return newState;
 }
 
+// Move focus up or down between existing blocks.  Simply schedules a focus
+// change callback and returns the state unchanged.
 async function moveFocus({ state, action, addCallback }) {
     addCallback(({ refsMap }) => {
         let index = state.findIndex((b) => b.id === action.id);
@@ -343,6 +339,8 @@ async function moveFocus({ state, action, addCallback }) {
     return state;
 }
 
+// Convert a block to a different type.  Creates a new block instance of the
+// requested type and runs lifecycle hooks accordingly.
 async function convertBlockType({ state, action, addCallback, blocks }) {
     let blockDef = blocks.find((bType) => bType.type === action.newBlockType);
     let block = state.find((b) => b.id === action.id);
@@ -352,9 +350,7 @@ async function convertBlockType({ state, action, addCallback, blocks }) {
     let data = blockDef.init(prevBlock);
     let keys = Object.keys(data);
     for (let i = 0; i < keys.length; i++) {
-        data[keys[i]] = blockObj.data[keys[i]]
-            ? blockObj.data[keys[i]]
-            : data[keys[i]];
+        data[keys[i]] = blockObj.data[keys[i]] ? blockObj.data[keys[i]] : data[keys[i]];
     }
     const newBlock = new Block({
         id: generateId(),
@@ -370,21 +366,17 @@ async function convertBlockType({ state, action, addCallback, blocks }) {
             ref.current.focusAtStart();
         }
     });
-    let newState = [
-        ...state.slice(0, blockIndex),
-        newBlock,
-        ...state.slice(blockIndex + 1),
-    ];
+    let newState = [...state.slice(0, blockIndex), newBlock, ...state.slice(blockIndex + 1)];
     // Lifecycle hooks
     for (let i = 0; i < blocks.length; i++) {
         let blockD = blocks[i];
         if (typeof blockD.onConvertBlockType === "function") {
             let modifyBlock = (nBlock) => {
-                let index = newState.findIndex((b) => b.id === nBlock.id);
+                let idx = newState.findIndex((b) => b.id === nBlock.id);
                 newState = [
-                    ...newState.slice(0, index),
+                    ...newState.slice(0, idx),
                     new Block(nBlock),
-                    ...newState.slice(index + 1),
+                    ...newState.slice(idx + 1),
                 ];
             };
             let focusOnCurrentBlock = () => {
@@ -409,6 +401,9 @@ async function convertBlockType({ state, action, addCallback, blocks }) {
     return newState;
 }
 
+// Execute a menu item.  The action field on the menu item may perform
+// arbitrary modifications to the block state, open editors, or request
+// callbacks.  Lifecycle hooks run afterwards.
 async function executeMenu({
     state,
     action,
@@ -420,9 +415,7 @@ async function executeMenu({
 }) {
     let block = state.find((b) => b.id === action.id);
     let blockObj = block.toObj();
-
     let newState = [...state];
-
     // Replace a block in newState by id, to allow updating multiple blocks
     let modifyBlock = (newBlock) => {
         const idx = newState.findIndex((b) => b.id === newBlock.id);
@@ -445,7 +438,6 @@ async function executeMenu({
             editorFns.openEditor(name, data, block);
         } else throw new Error(`Editor ${name} not found`);
     };
-
     await action.action(
         {
             currentBlock: blockObj,
@@ -454,7 +446,6 @@ async function executeMenu({
         },
         { modifyBlock, focusOnCurrentBlock, openEditor },
     );
-
     // Lifecycle hooks
     for (let i = 0; i < blocks.length; i++) {
         let blockD = blocks[i];
@@ -472,29 +463,26 @@ async function executeMenu({
             );
         }
     }
-
     return newState;
 }
 
+// Replace a block instance directly with an updated one.  Useful for editors
+// that modify block data wholesale.  Lifecycle hooks run afterwards.
 async function modifyRawBlock({ state, action, blocks, addCallback }) {
     let newBlock = new Block(action.block);
     let blockIndex = state.findIndex((s) => s.id === action.block.id);
     let newState = [...state];
-    newState = [
-        ...newState.slice(0, blockIndex),
-        newBlock,
-        ...newState.slice(blockIndex + 1),
-    ];
+    newState = [...newState.slice(0, blockIndex), newBlock, ...newState.slice(blockIndex + 1)];
     // Lifecycle hooks
     for (let i = 0; i < blocks.length; i++) {
         let blockD = blocks[i];
         if (typeof blockD.onModifyRawBlock === "function") {
             let modifyBlock = (nBlock) => {
-                let index = newState.findIndex((b) => b.id === nBlock.id);
+                let idx = newState.findIndex((b) => b.id === nBlock.id);
                 newState = [
-                    ...newState.slice(0, index),
+                    ...newState.slice(0, idx),
                     new Block(nBlock),
-                    ...newState.slice(index + 1),
+                    ...newState.slice(idx + 1),
                 ];
             };
             let focusOnCurrentBlock = () => {
