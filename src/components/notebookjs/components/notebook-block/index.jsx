@@ -95,10 +95,11 @@ function NotebookBlock(props) {
     );
 }
 
-// Only re-render a block when its own data or props (or readOnly) change
+// Only re-render a block when its own data or props (or readOnly) or dispatcher change
 const areEqual = (prev, next) => {
     return (
         prev.readOnly === next.readOnly &&
+        prev.dispatcher === next.dispatcher &&
         prev.block.id === next.block.id &&
         prev.block.blockid === next.block.blockid &&
         deepEquals(prev.block.data, next.block.data) &&
