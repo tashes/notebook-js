@@ -19,7 +19,7 @@ const SubheadingBlock = forwardRef(function (
 ) {
     return (
         <div className="flex-grow mx-2 cursor-text relative py-0.5">
-            <div className="text-xl font-semibold text-gray-700">
+            <div className="text-xl font-semibold text-foreground">
                 <BaseTextEditor
                     id={id}
                     iText={data.text || ""}

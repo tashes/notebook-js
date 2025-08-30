@@ -209,7 +209,7 @@ export default function LatexEditor({
     return (
         <Dialog open={true} onOpenChange={handleDialogClose}>
             <DialogContent
-                className="sm:max-w-[800px] overflow-y-auto z-50 bg-white"
+                className="sm:max-w-[800px] overflow-y-auto z-50"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
@@ -230,7 +230,7 @@ export default function LatexEditor({
                     </div>
                     <div className="flex flex-col">
                         <div className="font-medium mb-2">Preview</div>
-                        <div className="flex-1 border rounded p-4 bg-white overflow-auto max-h-[400px]">
+                        <div className="flex-1 border rounded p-4 bg-card text-foreground overflow-auto max-h-[400px]">
                             {latex.trim() !== "" ? (
                                 <>
                                     <div
@@ -247,7 +247,7 @@ export default function LatexEditor({
                                 </>
                             ) : (
                                 <>
-                                    <div className="text-gray-400 italic">
+                                    <div className="text-muted-foreground italic">
                                         Preview will appear here
                                     </div>
                                 </>

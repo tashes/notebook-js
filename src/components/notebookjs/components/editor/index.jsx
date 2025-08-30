@@ -10,7 +10,7 @@ export default function Editor({
 }) {
     let CurrentEditor = editors.find((e) => e.label === current);
     return (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 bg-black/80 dark:bg-black/60 flex items-center justify-center">
             <CurrentEditor
                 data={data}
                 currentBlock={currentBlock}

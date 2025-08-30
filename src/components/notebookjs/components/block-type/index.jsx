@@ -55,7 +55,7 @@ export default function BlockType({
                 <DropdownMenuTrigger asChild>
                     <button
                         disabled={readOnly === true}
-                        className={`flex items-center justify-center w-9 h-9 min-w-[2rem] min-h-[2rem] text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded cursor-pointer self-start ${readOnly === true ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+                        className={`flex items-center justify-center w-9 h-9 min-w-[2rem] min-h-[2rem] text-muted-foreground hover:text-accent-foreground hover:bg-accent rounded cursor-pointer self-start ${readOnly === true ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
                     >
                         <span className="font-mono text-xs">
                             {currentBlockIcon}

@@ -48,7 +48,7 @@ export default function CanvasEditor({
         <>
             <Dialog open={true} onOpenChange={handleClose}>
                 <DialogContent
-                    className="sm:max-w-[800px] overflow-y-auto z-50 bg-white"
+                    className="sm:max-w-[800px] overflow-y-auto z-50"
                     onClick={(e) => {
                         e.stopPropagation();
                     }}

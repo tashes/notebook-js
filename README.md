@@ -138,3 +138,10 @@ module.exports = {
 ```
 
 If you accidentally import from `@tamatashwin/notebook-js` in a React Server Component, the package will throw with a helpful message. Always import from `@tamatashwin/notebook-js/client` inside a `'use client'` file.
+
+## Dark Mode
+
+- The library uses CSS variables and Tailwind tokens with a `.dark` class toggle.
+- To enable dark mode, add `.dark` to a parent element (commonly `<html class="dark">`).
+- Colors adapt via semantic classes like `bg-background`, `text-foreground`, `border-border`, `bg-accent`, etc.
+- You control the theme toggle; the components automatically respond to the presence/absence of `.dark`.

@@ -28,9 +28,21 @@ import TableEditor from "./components/notebookjs/editors/table";
 import LatexEditor from "./components/notebookjs/editors/latex";
 
 import { useState, useEffect } from "react";
+import { Button } from "./components/notebookjs/ui/button";
 
 function App() {
     let [blocks, setBlocks] = useState([]);
+    let [theme, setTheme] = useState(() => {
+        if (typeof window === "undefined") return "light";
+        return localStorage.getItem("notebookjs-theme") || "light";
+    });
+
+    useEffect(() => {
+        const root = document.documentElement;
+        if (theme === "dark") root.classList.add("dark");
+        else root.classList.remove("dark");
+        localStorage.setItem("notebookjs-theme", theme);
+    }, [theme]);
     // Simulate loading initial blocks after a delay (e.g., from an API)
     // useEffect(() => {
     //     const initialBlocks = [
@@ -179,9 +191,21 @@ function App() {
     ];
     return (
         <div className="container mx-auto p-4 max-w-3xl">
-            <h1 className="text-2xl font-bold mb-4">NotebookJS</h1>
+            <div className="flex items-center justify-between mb-4">
+                <h1 className="text-2xl font-bold">NotebookJS</h1>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer"
+                    onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+                    title="Toggle theme"
+                    type="button"
+                >
+                    {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                </Button>
+            </div>
 
-            <div className="mb-6 rounded-md border border-gray-300">
+            <div className="mb-6 rounded-md border border-border">
                 <NotebookJS
                     blocks={blocks}
                     onChange={setBlocks}
@@ -193,7 +217,7 @@ function App() {
                 />
             </div>
 
-            <pre className="bg-gray-100 p-4 rounded overflow-auto max-h-[400px]">
+            <pre className="bg-muted text-muted-foreground p-4 rounded overflow-auto max-h-[400px] border border-border">
                 {JSON.stringify(blocks, undefined, 4)}
             </pre>
         </div>

@@ -30,7 +30,7 @@ const UnorderedListBlock = forwardRef(function (
                 className={`flex-shrink-0 text-right flex items-baseline justify-end mr-2 select-none`}
                 style={{ marginLeft: `${indentation * 0.5}rem` }}
             >
-                <span className="text-gray-500 font-mono h-8 flex items-center justify-center">
+                <span className="text-muted-foreground font-mono h-8 flex items-center justify-center">
                     {bulletCharacter}
                 </span>
             </div>

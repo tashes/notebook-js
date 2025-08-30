@@ -79,7 +79,7 @@ const TableBlock = forwardRef(function (
             <div className="my-2 relative overflow-auto">
                 {data.rows.length > 0 ? (
                     <table
-                        className="w-full border-collapse min-w-max text-gray-600 cursor-pointer"
+                        className="w-full border-collapse min-w-max text-muted-foreground cursor-pointer"
                         onClick={handleEditTable}
                     >
                         <tbody>
@@ -119,17 +119,17 @@ const TableBlock = forwardRef(function (
                     </table>
                 ) : (
                     <div
-                        className="border border-dashed border-gray-300 rounded-md p-8 text-center cursor-pointer"
+                        className="border border-dashed border-border rounded-md p-8 text-center cursor-pointer"
                         onClick={handleEditTable}
                     >
-                        <Table2 className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                        <p className="text-gray-500">Add a table</p>
+                        <Table2 className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-muted-foreground">Add a table</p>
                     </div>
                 )}
             </div>
 
             <div className="cursor-pointer relative">
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-muted-foreground">
                     <BaseTextEditor
                         id={id}
                         iText={data.text || ""}

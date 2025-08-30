@@ -148,7 +148,7 @@ export default function InlineToolbar({
 
     return (
         <div
-            className="inline-toolbar bg-white shadow-md p-1 flex items-center space-x-1 border border-gray-200"
+            className="inline-toolbar bg-popover text-popover-foreground shadow-md p-1 flex items-center space-x-1 border border-border"
             style={toolbarStyle}
             onMouseDown={(e) => e.preventDefault()}
         >

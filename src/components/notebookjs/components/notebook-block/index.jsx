@@ -52,7 +52,7 @@ function NotebookBlock(props) {
             className="block-wrapper relative w-full overflow-hidden"
             key={block.id}
         >
-            <div className="block-editor w-full overflow-hidden p-1 rounded-md transition-colors group flex flex-row text-sm hover:bg-gray-50">
+            <div className="block-editor w-full overflow-hidden p-1 rounded-md transition-colors group flex flex-row text-sm hover:bg-muted">
                 <div className="w-9 p-0 mr-1">
                     <BlockType
                         id={block.id}

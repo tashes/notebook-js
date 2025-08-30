@@ -98,16 +98,16 @@ const ImageBlock = forwardRef(function (
                     <img
                         src={data.img}
                         alt={data.text}
-                        className="max-w-full rounded-md border border-gray-200 cursor-pointer"
+                        className="max-w-full rounded-md border border-border cursor-pointer"
                         onClick={handleOpenImg}
                     />
                 ) : (
                     <div
-                        className="border border-dashed border-gray-300 rounded-md p-8 text-center cursor-pointer"
+                        className="border border-dashed border-border rounded-md p-8 text-center cursor-pointer"
                         onClick={handleSelectImg}
                     >
-                        <ImageIcon className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                        <p className="text-gray-500">Add an image</p>
+                        <ImageIcon className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-muted-foreground">Add an image</p>
                     </div>
                 )}
                 <input
@@ -119,7 +119,7 @@ const ImageBlock = forwardRef(function (
                 />
             </div>
             <div className="cursor-text relative">
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-muted-foreground">
                     <BaseTextEditor
                         id={id}
                         iText={data.text || ""}

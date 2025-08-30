@@ -73,7 +73,7 @@ export default function ToolItem({
         return (
             <button
                 key={`${tool.label}-${style.name}`}
-                className={`rounded cursor-pointer outline-none hover:scale-[1.5] transition-all duration-100 ${isActiveSubItem ? "border-black border-2" : "border-gray-300 border-transparent border-2"}`}
+                className={`rounded cursor-pointer outline-none hover:scale-[1.5] transition-all duration-100 ${isActiveSubItem ? "ring-2 ring-ring" : "border border-border"}`}
                 onClick={(e) => handleSpecificToggle(e, style)}
             >
                 <div className="w-4 h-4 flex items-center justify-center scale-100">
@@ -91,7 +91,7 @@ export default function ToolItem({
         >
             <button
                 onClick={handleToggle}
-                className={`p-1 rounded cursor-pointer hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-opacity-50 ${isActive ? `bg-gray-200` : ""}`}
+                className={`p-1 rounded cursor-pointer hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-opacity-50 ${isActive ? `bg-accent` : ""}`}
             >
                 <div className="w-4 h-4 flex items-center justify-center scale-100">
                     {tool.icon}
@@ -100,7 +100,7 @@ export default function ToolItem({
             {tool.constants.some((constant) => constant === "GROUP") &&
                 showGroup && (
                     <div
-                        className="absolute top-[-2.5rem] left-0 mt-0 p-2 bg-white shadow-md rounded-md border border-gray-200 flex space-x-2 z-10000"
+                        className="absolute top-[-2.5rem] left-0 mt-0 p-2 bg-popover text-popover-foreground shadow-md rounded-md border border-border flex space-x-2 z-10000"
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                     >

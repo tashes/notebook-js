@@ -413,7 +413,7 @@ export default function TableEditor({
 
     return (
         <div className="flex flex-col justify-start fixed top-0 left-0 p-4 h-full w-full max-w-screen overflow-hidden">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-white rounded-lg w-full">
+            <div className="p-4 border-b border-border flex justify-between items-center bg-card text-foreground rounded-lg w-full">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
@@ -485,20 +485,20 @@ export default function TableEditor({
             </div>
 
             <div className="flex-grow overflow-auto p-4">
-                <div className="border border-gray-200 rounded-md overflow-hidden bg-white">
+                <div className="border border-border rounded-md overflow-hidden bg-card text-foreground">
                     <div className="overflow-x-auto relative">
                         <table className="w-full border-collapse min-w-max">
                             <thead>
                                 <tr>
                                     <th
-                                        className="w-10 h-10 bg-gray-100 border border-gray-300 cursor-pointer hover:bg-gray-200 sticky left-0 z-10"
+                                        className="w-10 h-10 bg-muted border border-border cursor-pointer hover:bg-accent sticky left-0 z-10"
                                         onClick={() => handleSelectionAll()}
                                     ></th>
                                     {tableData[0].cells.map(
                                         (cell, colIndex) => (
                                             <th
                                                 key={cell.id}
-                                                className={`px-3 py-2 border border-gray-300 font-semibold text-center cursor-pointer hover:bg-gray-200 ${selectedCols.includes(colIndex) ? "bg-blue-100" : "bg-gray-100"}`}
+                                                className={`px-3 py-2 border border-border font-semibold text-center cursor-pointer hover:bg-accent ${selectedCols.includes(colIndex) ? "bg-accent" : "bg-muted"}`}
                                                 onClick={() =>
                                                     handleSelectionCol(colIndex)
                                                 }
@@ -513,7 +513,7 @@ export default function TableEditor({
                                 {tableData.map((row, rowIndex) => (
                                     <tr key={`row-${row.id}`}>
                                         <th
-                                            className={`px-3 py-2 border border-gray-300 font-semibold text-center cursor-pointer hover:bg-gray-200 ${selectedRows.includes(rowIndex) ? "bg-blue-100" : "bg-gray-100"}`}
+                                            className={`px-3 py-2 border border-border font-semibold text-center cursor-pointer hover:bg-accent ${selectedRows.includes(rowIndex) ? "bg-accent" : "bg-muted"}`}
                                             onClick={() =>
                                                 handleSelectionRow(rowIndex)
                                             }
@@ -538,7 +538,7 @@ export default function TableEditor({
                                                             selectedCols.includes(
                                                                 colIndex,
                                                             )
-                                                                ? "bg-blue-50"
+                                                                ? "bg-accent text-accent-foreground"
                                                                 : (selectedRows.includes(
                                                                         rowIndex,
                                                                     ) &&
@@ -549,7 +549,7 @@ export default function TableEditor({
                                                                     ) &&
                                                                         selectedRows.length ===
                                                                             0)
-                                                                  ? "bg-blue-50"
+                                                                  ? "bg-accent text-accent-foreground"
                                                                   : ""
                                                         }`}
                                                         onMouseDown={(e) =>

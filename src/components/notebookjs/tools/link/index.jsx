@@ -29,12 +29,12 @@ export default {
                 className="relative group/link inline-block z-10"
                 onClick={handleClick}
             >
-                <div className="border border-gray-400 bg-gray-50 rounded-md px-2 py-1 mx-1 inline-block cursor-pointer hover:bg-gray-200">
+                <div className="border border-border bg-muted rounded-md px-2 py-1 mx-1 inline-block cursor-pointer hover:bg-accent">
                     {props.children}
                 </div>
                 <div
                     contentEditable={false}
-                    className="absolute left-1/2 -translate-x-1/2 mt-2 w-max whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 pointer-events-none"
+                    className="absolute left-1/2 -translate-x-1/2 mt-2 w-max whitespace-nowrap bg-foreground text-background text-xs px-2 py-1 rounded opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 pointer-events-none"
                 >
                     Left Click + {isMacPlatform() ? "⌘" : "Ctrl"} to open link
                 </div>

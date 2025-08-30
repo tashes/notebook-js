@@ -82,7 +82,7 @@ export default function PropertiesEditor({
     return (
         <Dialog open={true} onOpenChange={handleDialogClose}>
             <DialogContent
-                className="max-w-2xl max-h-[80vh] overflow-y-auto z-50 bg-white"
+                className="max-w-2xl max-h-[80vh] overflow-y-auto z-50"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}

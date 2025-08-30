@@ -80,7 +80,7 @@ const CanvasBlock = forwardRef(function (
             <div className="my-2 relative">
                 {data.elements ? (
                     <div
-                        className="h-[400px] border rounded-md overflow-hidden bg-white cursor-pointer flex items-center justify-center"
+                        className="h-[400px] border rounded-md overflow-hidden bg-card cursor-pointer flex items-center justify-center"
                         onClick={handleOpenCanvas}
                     >
                         <canvas
@@ -90,16 +90,16 @@ const CanvasBlock = forwardRef(function (
                     </div>
                 ) : (
                     <div
-                        className="border border-dashed border-gray-300 rounded-md p-8 text-center cursor-pointer"
+                        className="border border-dashed border-border rounded-md p-8 text-center cursor-pointer"
                         onClick={handleOpenCanvas}
                     >
-                        <PencilRuler className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                        <p className="text-gray-500">Add a canvas</p>
+                        <PencilRuler className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-muted-foreground">Add a canvas</p>
                     </div>
                 )}
             </div>
             <div className="cursor-text relative">
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-muted-foreground">
                     <BaseTextEditor
                         id={id}
                         iText={data.text || ""}

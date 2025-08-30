@@ -65,7 +65,7 @@ const LatexBlock = forwardRef(function (
                 {data.latex ? (
                     <>
                         <div
-                            className="katex-display w-full border border-dashed border-gray-300 rounded-md p-8 text-center cursor-pointer"
+                        className="katex-display w-full border border-dashed border-border rounded-md p-8 text-center cursor-pointer"
                             onClick={handleOpenLatex}
                             dangerouslySetInnerHTML={{
                                 __html: renderedLatex,
@@ -75,7 +75,7 @@ const LatexBlock = forwardRef(function (
                             <Accordion
                                 type="single"
                                 collapsible
-                                className="w-full hover:bg-gray-100 px-8 rounded-2xl"
+                                className="w-full hover:bg-accent px-8 rounded-2xl"
                             >
                                 <AccordionItem value="info">
                                     <AccordionTrigger>
@@ -85,7 +85,7 @@ const LatexBlock = forwardRef(function (
                                         {renderedVariables.map((v) => (
                                             <div
                                                 key={v.name}
-                                                className="flex items-center gap-2 bg-gray-100"
+                                                className="flex items-center gap-2 bg-accent"
                                             >
                                                 <div className="w-48 text-center">
                                                     <span
@@ -106,16 +106,16 @@ const LatexBlock = forwardRef(function (
                     </>
                 ) : (
                     <div
-                        className="border border-dashed border-gray-300 rounded-md p-8 text-center cursor-pointer"
+                        className="border border-dashed border-border rounded-md p-8 text-center cursor-pointer"
                         onClick={handleOpenLatex}
                     >
-                        <SquareEqual className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                        <p className="text-gray-500">Add a Latex Equation</p>
+                        <SquareEqual className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-muted-foreground">Add a Latex Equation</p>
                     </div>
                 )}
             </div>
             <div className="cursor-text relative">
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-muted-foreground">
                     <BaseTextEditor
                         id={id}
                         iText={data.text || ""}

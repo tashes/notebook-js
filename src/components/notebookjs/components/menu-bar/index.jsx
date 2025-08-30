@@ -69,7 +69,7 @@ export default function MenuBar({
             <DropdownMenuTrigger asChild>
                 <button
                     disabled={readOnly}
-                    className={`flex items-center justify-center w-9 h-9 text-gray-400 rounded cursor-pointer opacity-0 hover:text-gray-600 hover:bg-gray-100 group-hover:opacity-100 ${readOnly === true ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+                    className={`flex items-center justify-center w-9 h-9 text-muted-foreground rounded cursor-pointer opacity-0 hover:text-accent-foreground hover:bg-accent group-hover:opacity-100 ${readOnly === true ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
                 >
                     <MoreHorizontal className="h-4 w-4" />
                 </button>
