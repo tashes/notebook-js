@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../../ui/button";
 import { X } from "lucide-react";
-import { Excalidraw } from "@excalidraw/excalidraw";
-import "@excalidraw/excalidraw/index.css";
+// Remove top-level Excalidraw imports to avoid SSR touching window
+// We'll dynamically import them on the client inside useEffect
 import "./index.css";
 import {
     Dialog,
@@ -18,6 +18,24 @@ export default function CanvasEditor({
     close = () => {},
 }) {
     const excalidrawRef = useRef(null);
+    const [ExcalidrawComp, setExcalidrawComp] = useState(null);
+
+    useEffect(() => {
+        let mounted = true;
+        (async () => {
+            try {
+                const mod = await import("@excalidraw/excalidraw");
+                // Load its CSS only on the client
+                await import("@excalidraw/excalidraw/index.css");
+                if (mounted) setExcalidrawComp(() => mod.Excalidraw);
+            } catch (e) {
+                console.error("Failed to load Excalidraw", e);
+            }
+        })();
+        return () => {
+            mounted = false;
+        };
+    }, []);
     const [elements, setElements] = useState(currentBlock.data.elements || []);
     const [appState, setAppState] = useState({
         viewBackgroundColor: "#ffffff",
@@ -65,34 +83,40 @@ export default function CanvasEditor({
                         onMouseUp={(e) => e.stopPropagation()}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        <Excalidraw
-                            ref={excalidrawRef}
-                            initialData={{
-                                elements,
-                                appState,
-                                files,
-                                scrollToContent: true,
-                            }}
-                            onChange={(elements, appState, files) => {
-                                // shallow clone the elements array to ensure state updates on deletion
-                                setElements(elements);
-                                setAppState(appState);
-                                setFiles(files);
-                            }}
-                            isCollaborating={false}
-                            UIOptions={{
-                                canvasActions: {
-                                    changeViewBackgroundColor: false,
-                                    clearCanvas: false,
-                                    export: false,
-                                    loadScene: false,
-                                    saveToActiveFile: false,
-                                    toggleTheme: false,
-                                    saveAsImage: false,
-                                },
-                                welcomeScreen: false,
-                            }}
-                        />
+                        {ExcalidrawComp ? (
+                            <ExcalidrawComp
+                                ref={excalidrawRef}
+                                initialData={{
+                                    elements,
+                                    appState,
+                                    files,
+                                    scrollToContent: true,
+                                }}
+                                onChange={(elements, appState, files) => {
+                                    // shallow clone the elements array to ensure state updates on deletion
+                                    setElements(elements);
+                                    setAppState(appState);
+                                    setFiles(files);
+                                }}
+                                isCollaborating={false}
+                                UIOptions={{
+                                    canvasActions: {
+                                        changeViewBackgroundColor: false,
+                                        clearCanvas: false,
+                                        export: false,
+                                        loadScene: false,
+                                        saveToActiveFile: false,
+                                        toggleTheme: false,
+                                        saveAsImage: false,
+                                    },
+                                    welcomeScreen: false,
+                                }}
+                            />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                                Loading canvas…
+                            </div>
+                        )}
                     </div>
                 </DialogContent>
             </Dialog>
