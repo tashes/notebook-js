@@ -8,15 +8,15 @@
     "types": "./index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/notebookjs.es.js",
-            "require": "./dist/notebookjs.umd.js",
             "types": "./index.d.ts",
-            "react-server": "./rsc-stub.js"
+            "react-server": "./rsc-stub.js",
+            "import": "./dist/notebookjs.es.js",
+            "require": "./dist/notebookjs.umd.js"
         },
         "./client": {
+            "types": "./index.d.ts",
             "import": "./client/index.js",
-            "require": "./client/index.js",
-            "types": "./index.d.ts"
+            "require": "./client/index.js"
         },
         "./styles.css": "./dist/notebook-js.css"
     },
