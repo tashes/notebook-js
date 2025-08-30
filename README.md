@@ -73,3 +73,68 @@ export default function App () {
     );
 };
 ```
+
+## Next.js (App Router) Usage
+
+- Import from the client-only subpath and add the CSS explicitly:
+
+```tsx
+"use client";
+import React, { useState, useCallback } from "react";
+import {
+  NotebookJS,
+  ParagraphBlock,
+  HeadingBlock,
+  SubheadingBlock,
+  UnorderedListBlock,
+  OrderedListBlock,
+  ImageBlock,
+  CanvasBlock,
+  LatexBlock,
+  BoldTool,
+  HighlightTool,
+  SetNumberingEditor,
+  ImageEditor,
+  CanvasEditor,
+  LatexEditor,
+} from "@tamatashwin/notebook-js/client"; // note the /client subpath
+import "@tamatashwin/notebook-js/styles.css"; // import styles in a client boundary
+
+export default function Notebook() {
+  const [blocks, setBlocks] = useState([]);
+  const handleChange = useCallback((next) => setBlocks(next), []);
+
+  return (
+    <NotebookJS
+      blocks={blocks}
+      onChange={handleChange}
+      blockTypes=[
+        ParagraphBlock,
+        HeadingBlock,
+        SubheadingBlock,
+        UnorderedListBlock,
+        OrderedListBlock,
+        ImageBlock,
+        CanvasBlock,
+        LatexBlock
+      ]
+      tools={[BoldTool, HighlightTool]}
+      editors={[SetNumberingEditor, ImageEditor, CanvasEditor, LatexEditor]}
+    />
+  );
+}
+```
+
+- Since the client entry re-exports unbuilt source, add transpilation in `next.config.js`:
+
+```js
+// next.config.js
+module.exports = {
+  experimental: {
+    // if you're using the app router
+  },
+  transpilePackages: ["@tamatashwin/notebook-js"],
+};
+```
+
+If you accidentally import from `@tamatashwin/notebook-js` in a React Server Component, the package will throw with a helpful message. Always import from `@tamatashwin/notebook-js/client` inside a `'use client'` file.
