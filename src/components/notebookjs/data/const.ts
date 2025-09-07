@@ -1,0 +1,12 @@
+export const GENIDREGEXP = /^[0-9a-fA-F]{24}$/;
+export const BLOCKIDREGEXP = /^[0-9a-fA-F_]{10}$/;
+export const PROPKEY = /^[a-z_]{1,16}$/;
+export const KC_DELETE_BLOCK = "block-delete" as const;
+export const KC_MOVE_BLOCK_UP = "block-move-up" as const;
+export const KC_MOVE_BLOCK_DOWN = "block-move-down" as const;
+export const KC_SHIFT_FOCUS_UP = "focus-shift-up" as const;
+export const KC_SHIFT_FOCUS_DOWN = "focus-shift-down" as const;
+export const KC_CONVERT_BLOCK_TYPE = "convert-block-type" as const;
+export const KC_MENU_ACTION = "menu-action" as const;
+export const KC_TOOL_TOGGLE = "tool-toggle" as const;
+export const KC_CUSTOM_SHORTCUT = "custom-shortcut" as const;

@@ -148,15 +148,15 @@ export interface NotebookJSProps {
 export const NotebookJS: ComponentType<NotebookJSProps>;
 
 // Blocks
-export const ParagraphBlock: BlockComponent<import('./src/components/notebookjs/blocks/paragraph.types').ParagraphBlockData>;
-export const HeadingBlock: BlockComponent<import('./src/components/notebookjs/blocks/heading.types').HeadingBlockData>;
-export const SubheadingBlock: BlockComponent<import('./src/components/notebookjs/blocks/subheading.types').SubheadingBlockData>;
-export const OrderedListBlock: BlockComponent<import('./src/components/notebookjs/blocks/ordered-list.types').OrderedListBlockData>;
-export const UnorderedListBlock: BlockComponent<import('./src/components/notebookjs/blocks/unordered-list.types').UnorderedListBlockData>;
-export const ImageBlock: BlockComponent<import('./src/components/notebookjs/blocks/image.types').ImageBlockData>;
-export const CanvasBlock: BlockComponent<import('./src/components/notebookjs/blocks/canvas.types').CanvasBlockData>;
-export const TableBlock: BlockComponent<import('./src/components/notebookjs/blocks/table.types').TableBlockData>;
-export const LatexBlock: BlockComponent<import('./src/components/notebookjs/blocks/latex.types').LatexBlockData>;
+export const ParagraphBlock: BlockComponent<import('./src/components/notebookjs/types').ParagraphBlockData>;
+export const HeadingBlock: BlockComponent<import('./src/components/notebookjs/types').HeadingBlockData>;
+export const SubheadingBlock: BlockComponent<import('./src/components/notebookjs/types').SubheadingBlockData>;
+export const OrderedListBlock: BlockComponent<import('./src/components/notebookjs/types').OrderedListBlockData>;
+export const UnorderedListBlock: BlockComponent<import('./src/components/notebookjs/types').UnorderedListBlockData>;
+export const ImageBlock: BlockComponent<import('./src/components/notebookjs/types').ImageBlockData>;
+export const CanvasBlock: BlockComponent<import('./src/components/notebookjs/types').CanvasBlockData>;
+export const TableBlock: BlockComponent<import('./src/components/notebookjs/types').TableBlockData>;
+export const LatexBlock: BlockComponent<import('./src/components/notebookjs/types').LatexBlockData>;
 
 // Tools
 export const BoldTool: ToolConfig;
@@ -171,28 +171,17 @@ export const LinkTool: ToolConfig;
 export const EditPropsMenuItem: MenuItemConfig;
 
 // Editors
-export const EditPropsEditor: EditorComponent<import('./src/components/notebookjs/editors/properties/types').PropertiesEditorData>;
-export const SetNumberingEditor: EditorComponent<import('./src/components/notebookjs/editors/set-numbering/types').SetNumberingEditorData>;
-export const ImageEditor: EditorComponent<import('./src/components/notebookjs/editors/image/types').ImageEditorData>;
-export const CanvasEditor: EditorComponent<import('./src/components/notebookjs/editors/canvas/types').CanvasEditorData>;
-export const TableEditor: EditorComponent<import('./src/components/notebookjs/editors/table/types').TableEditorData>;
-export const LatexEditor: EditorComponent<import('./src/components/notebookjs/editors/latex/types').LatexEditorData>;
+export const EditPropsEditor: EditorComponent<import('./src/components/notebookjs/types').PropertiesEditorData>;
+export const SetNumberingEditor: EditorComponent<import('./src/components/notebookjs/types').SetNumberingEditorData>;
+export const ImageEditor: EditorComponent<import('./src/components/notebookjs/types').ImageEditorData>;
+export const CanvasEditor: EditorComponent<import('./src/components/notebookjs/types').CanvasEditorData>;
+export const TableEditor: EditorComponent<import('./src/components/notebookjs/types').TableEditorData>;
+export const LatexEditor: EditorComponent<import('./src/components/notebookjs/types').LatexEditorData>;
 
 // Block data shapes
-export type { ParagraphBlockData } from "./src/components/notebookjs/blocks/paragraph.types";
-export type { HeadingBlockData } from "./src/components/notebookjs/blocks/heading.types";
-export type { SubheadingBlockData } from "./src/components/notebookjs/blocks/subheading.types";
-export type { UnorderedListBlockData } from "./src/components/notebookjs/blocks/unordered-list.types";
-export type { OrderedListBlockData } from "./src/components/notebookjs/blocks/ordered-list.types";
-export type { LatexBlockData, LatexVariable } from "./src/components/notebookjs/blocks/latex.types";
-export type { CanvasBlockData } from "./src/components/notebookjs/blocks/canvas.types";
-export type { ImageBlockData } from "./src/components/notebookjs/blocks/image.types";
-export type { TableBlockData, TableCellData } from "./src/components/notebookjs/blocks/table.types";
+// Block data shapes
+export type { ParagraphBlockData, HeadingBlockData, SubheadingBlockData, UnorderedListBlockData, OrderedListBlockData, LatexBlockData, LatexVariable, CanvasBlockData, ImageBlockData, TableBlockData, TableCellData } from './src/components/notebookjs/types';
 
 // Editor data shapes
-export type { PropertiesEditorData } from "./src/components/notebookjs/editors/properties/types";
-export type { ImageEditorData } from "./src/components/notebookjs/editors/image/types";
-export type { CanvasEditorData } from "./src/components/notebookjs/editors/canvas/types";
-export type { LatexEditorData } from "./src/components/notebookjs/editors/latex/types";
-export type { SetNumberingEditorData } from "./src/components/notebookjs/editors/set-numbering/types";
-export type { TableEditorData } from "./src/components/notebookjs/editors/table/types";
+// Editor data shapes
+export type { PropertiesEditorData, ImageEditorData, CanvasEditorData, LatexEditorData, SetNumberingEditorData, TableEditorData } from './src/components/notebookjs/types';
