@@ -1,0 +1,16 @@
+{
+  "name": "bold-tool",
+  "type": "registry:ui",
+  "title": "Bold Tool",
+  "description": "Bold inline tool for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "path": "components/notebookjs/tools/bold/index.tsx",
+      "source": "src/components/notebookjs/tools/bold/index.tsx"
+    }
+  ]
+}

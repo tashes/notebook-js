@@ -150,13 +150,19 @@ If you accidentally import from `@tamatashwin/notebook-js` in a React Server Com
 
 Install the NotebookJS base setup (NotebookJS component + paragraph block + bold tool) directly from this repository's registry.
 
-1. Add the component with the custom registry:
+1. Register the NotebookJS namespace with shadcn (run once per project):
 
 ```bash
-npx shadcn@latest add notebookjs --registry https://raw.githubusercontent.com/tashes/notebook-js/main/registry.json
+npx shadcn@latest registry add @notebook=https://raw.githubusercontent.com/tashes/notebook-js/main/components/{name}.json
 ```
 
-2. Import the component and styles in your app:
+2. Install the base component from that namespace:
+
+```bash
+npx shadcn@latest add @notebook/notebookjs -y
+```
+
+3. Import the component and styles in your app:
 
 ```tsx
 import { useState } from "react";
@@ -169,16 +175,85 @@ export function Editor() {
 }
 ```
 
-3. The install creates files under `components/notebookjs/**`. By default it bundles the NotebookJS shell with the paragraph block type and the bold tool. Additional blocks/tools will ship as separate registry entries you can opt into later.
+4. The install creates files under `components/notebookjs/**`. By default it bundles the NotebookJS shell with the paragraph block type and the bold tool. Additional blocks/tools will ship as separate registry entries you can opt into later.
+
+If you prefer a one-off install without adding a registry namespace, pass the direct URL instead:
+
+```bash
+npx shadcn@latest add https://raw.githubusercontent.com/tashes/notebook-js/main/components/notebookjs.json -y
+```
 
 If you keep the default `components.json` aliases from `ui.shadcn.com`, everything will resolve automatically. Otherwise, update your aliases to point at the generated `components/notebookjs` directory. The install also reuses upstream shadcn primitives (`button`, `dropdown-menu`) via `registryDependencies`, so you can continue customizing those components in one place. The base install intentionally omits the legacy “Edit Props” menu item and Properties editor—add your own menu/editor if you need a props UI.
+
+> **Maintaining the registry:** After changing any source files, run `npm run build:registry` to regenerate the schema-compliant files under `components/**` and the root `registry.json`. The generated `components/*.json` files are kept in git so GitHub raw URLs always serve the latest schema-compliant registry items—regenerate them before publishing.
+
+All of the following commands assume you’ve already added the `@notebook` registry namespace.
+
+### Adding the Paragraph Block
+
+Install the paragraph block separately if you want to layer it onto an existing NotebookJS setup or override the base install:
+
+```bash
+npx shadcn@latest add @notebook/paragraph-block -y
+```
+
+Usage example:
+
+```tsx
+import ParagraphBlock from "@/components/notebookjs/blocks/paragraph";
+
+<NotebookJS blockTypes={[ParagraphBlock]} ... />
+```
+
+This is the same block shipped with the base package, so no extra editors or tools are required beyond the defaults.
+
+### Adding the Subheading Block
+
+Add the subheading block if you want a midsize heading style alongside the default paragraph block:
+
+```bash
+npx shadcn@latest add @notebook/subheading-block -y
+```
+
+Usage example:
+
+```tsx
+import SubheadingBlock from "@/components/notebookjs/blocks/subheading";
+
+<NotebookJS blockTypes={[ParagraphBlock, SubheadingBlock]} ... />
+```
+
+Like the paragraph entry, this relies entirely on the base NotebookJS install—no extra editors or menu items needed.
+
+### Adding the Table Block
+
+Bring in the full table experience (block + editor + toolbar icons):
+
+```bash
+npx shadcn@latest add @notebook/table-block -y
+```
+
+Usage example:
+
+```tsx
+import TableBlock from "@/components/notebookjs/blocks/table";
+import TableEditor from "@/components/notebookjs/editors/table";
+
+<NotebookJS
+  blockTypes={[ParagraphBlock, TableBlock]}
+  editors={[TableEditor]}
+  ...
+/>
+```
+
+The install includes the block preview, the modal editor UI, and the `Icon` helper used for table toolbar icons. No extra npm deps are required beyond the base NotebookJS package.
 
 ### Adding the Heading Block
 
 Once the base NotebookJS install is in place, pull in the heading block:
 
 ```bash
-npx shadcn@latest add heading-block --registry https://raw.githubusercontent.com/tashes/notebook-js/main/registry.json
+npx shadcn@latest add @notebook/heading-block -y
 ```
 
 After installation, include `HeadingBlock` in your editor configuration:
@@ -196,7 +271,7 @@ The heading block reuses the same properties editor and menu items from the base
 The canvas block ships with its own Excalidraw-powered editor. Install it after the base package:
 
 ```bash
-npx shadcn@latest add canvas-block --registry https://raw.githubusercontent.com/tashes/notebook-js/main/registry.json
+npx shadcn@latest add @notebook/canvas-block -y
 ```
 
 Then register it alongside your other blocks:
@@ -214,7 +289,7 @@ The install places the `CanvasBlock` plus the `CanvasEditor` (and its CSS) into 
 The image block adds upload + image editing UI backed by its own editor dialog:
 
 ```bash
-npx shadcn@latest add image-block --registry https://raw.githubusercontent.com/tashes/notebook-js/main/registry.json
+npx shadcn@latest add @notebook/image-block -y
 ```
 
 Usage example:
@@ -237,7 +312,7 @@ The block bundles the image picker UI, menu actions, and editor controls. Make s
 Bring in the LaTeX block and editor when you need math rendering:
 
 ```bash
-npx shadcn@latest add latex-block --registry https://raw.githubusercontent.com/tashes/notebook-js/main/registry.json
+npx shadcn@latest add @notebook/latex-block -y
 ```
 
 Then register both the block and the editor:
@@ -261,7 +336,7 @@ The LaTeX entry installs the block, editor, accordion UI, and textarea helper, p
 The ordered list block ships with menu shortcuts for indentation and a dedicated numbering editor:
 
 ```bash
-npx shadcn@latest add ordered-list-block --registry https://raw.githubusercontent.com/tashes/notebook-js/main/registry.json
+npx shadcn@latest add @notebook/ordered-list-block -y
 ```
 
 Usage example:
@@ -284,7 +359,7 @@ After installation, the block’s menu automatically includes “Increase/Decrea
 Install the unordered list block when you need bullet lists:
 
 ```bash
-npx shadcn@latest add unordered-list-block --registry https://raw.githubusercontent.com/tashes/notebook-js/main/registry.json
+npx shadcn@latest add @notebook/unordered-list-block -y
 ```
 
 Usage example:
@@ -299,3 +374,95 @@ import UnorderedListBlock from "@/components/notebookjs/blocks/unordered-list";
 ```
 
 It reuses the base text editor and built-in indentation shortcuts, so no additional editors are required beyond those already included with the NotebookJS base install.
+
+### Adding Text Formatting Tools
+
+All tool installs follow the same pattern—pull in the tool entry, import it, and append it to the `tools` array you pass into `NotebookJS`.
+
+#### Bold Tool
+
+```bash
+npx shadcn@latest add @notebook/bold-tool -y
+```
+
+```tsx
+import BoldTool from "@/components/notebookjs/tools/bold";
+
+<NotebookJS blockTypes={[ParagraphBlock]} tools={[BoldTool]} ... />
+```
+
+#### Italic Tool
+
+```bash
+npx shadcn@latest add @notebook/italic-tool -y
+```
+
+```tsx
+import ItalicTool from "@/components/notebookjs/tools/italic";
+
+<NotebookJS blockTypes={[ParagraphBlock]} tools={[ItalicTool]} ... />
+```
+
+#### Underline Tool
+
+```bash
+npx shadcn@latest add @notebook/underline-tool -y
+```
+
+```tsx
+import UnderlineTool from "@/components/notebookjs/tools/underline";
+
+<NotebookJS blockTypes={[ParagraphBlock]} tools={[UnderlineTool]} ... />
+```
+
+#### Highlight Tool
+
+```bash
+npx shadcn@latest add @notebook/highlight-tool -y
+```
+
+```tsx
+import HighlightTool from "@/components/notebookjs/tools/highlight";
+
+<NotebookJS blockTypes={[ParagraphBlock]} tools={[HighlightTool]} ... />
+```
+
+This tool exposes multiple color swatches via the inline toolbar.
+
+#### Link Tool
+
+```bash
+npx shadcn@latest add @notebook/link-tool -y
+```
+
+```tsx
+import LinkTool from "@/components/notebookjs/tools/link";
+
+<NotebookJS blockTypes={[ParagraphBlock]} tools={[LinkTool]} ... />
+```
+
+The link tool includes its own inline component that displays a tooltip and ctrl/⌘ click instructions.
+
+#### Subscript Tool
+
+```bash
+npx shadcn@latest add @notebook/subscript-tool -y
+```
+
+```tsx
+import SubscriptTool from "@/components/notebookjs/tools/subscript";
+
+<NotebookJS blockTypes={[ParagraphBlock]} tools={[SubscriptTool]} ... />
+```
+
+#### Superscript Tool
+
+```bash
+npx shadcn@latest add @notebook/superscript-tool -y
+```
+
+```tsx
+import SuperscriptTool from "@/components/notebookjs/tools/superscript";
+
+<NotebookJS blockTypes={[ParagraphBlock]} tools={[SuperscriptTool]} ... />
+```

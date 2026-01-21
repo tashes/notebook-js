@@ -1,0 +1,16 @@
+{
+  "name": "italic-tool",
+  "type": "registry:ui",
+  "title": "Italic Tool",
+  "description": "Italic inline tool for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "path": "components/notebookjs/tools/italic/index.tsx",
+      "source": "src/components/notebookjs/tools/italic/index.tsx"
+    }
+  ]
+}

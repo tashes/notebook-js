@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "italic-tool",
+  "type": "registry:ui",
+  "title": "Italic Tool",
+  "description": "Italic inline tool for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "path": "components/notebookjs/tools/italic/index.tsx",
+      "target": "components/notebookjs/tools/italic/index.tsx",
+      "content": "import { Italic } from \"lucide-react\";\nimport React from \"react\";\n\nexport default {\n  styles: [{ name: \"ITALIC\", styles: { fontStyle: \"italic\" } }],\n  constants: [\"PERSISTENT\"],\n  label: \"Italic\",\n  icon: <Italic />,\n};\n\n"
+    }
+  ]
+}

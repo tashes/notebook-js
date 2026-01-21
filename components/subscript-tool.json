@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "subscript-tool",
+  "type": "registry:ui",
+  "title": "Subscript Tool",
+  "description": "Subscript inline tool for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "path": "components/notebookjs/tools/subscript/index.tsx",
+      "target": "components/notebookjs/tools/subscript/index.tsx",
+      "content": "import { Subscript } from \"lucide-react\";\nimport React from \"react\";\n\nexport default {\n  styles: [{ name: \"SUBSCRIPT\", styles: { verticalAlign: \"sub\", fontSize: \"smaller\" } }],\n  constants: [\"NON-PERSISTENT\"],\n  label: \"Subscript\",\n  icon: <Subscript />,\n};\n\n"
+    }
+  ]
+}

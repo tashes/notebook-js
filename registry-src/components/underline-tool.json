@@ -1,0 +1,16 @@
+{
+  "name": "underline-tool",
+  "type": "registry:ui",
+  "title": "Underline Tool",
+  "description": "Underline inline tool for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "path": "components/notebookjs/tools/underline/index.tsx",
+      "source": "src/components/notebookjs/tools/underline/index.tsx"
+    }
+  ]
+}

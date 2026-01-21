@@ -1,41 +1,471 @@
 {
-  "name": "notebookjs-registry",
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "notebookjs",
   "homepage": "https://github.com/tashes/notebook-js",
   "items": [
     {
-      "name": "notebookjs",
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "bold-tool",
       "type": "registry:ui",
-      "path": "components/notebookjs.json"
+      "title": "Bold Tool",
+      "description": "Bold inline tool for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/bold/index.tsx",
+          "target": "components/notebookjs/tools/bold/index.tsx"
+        }
+      ]
     },
     {
-      "name": "heading-block",
-      "type": "registry:ui",
-      "path": "components/heading-block.json"
-    },
-    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "canvas-block",
       "type": "registry:ui",
-      "path": "components/canvas-block.json"
+      "title": "Canvas Block",
+      "description": "NotebookJS block for Excalidraw canvases plus its editor dialog.",
+      "dependencies": [
+        "@excalidraw/excalidraw"
+      ],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/canvas.tsx",
+          "target": "components/notebookjs/blocks/canvas.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/editors/canvas/index.tsx",
+          "target": "components/notebookjs/editors/canvas/index.tsx"
+        },
+        {
+          "type": "registry:file",
+          "path": "components/notebookjs/editors/canvas/index.css",
+          "target": "components/notebookjs/editors/canvas/index.css"
+        }
+      ]
     },
     {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "heading-block",
+      "type": "registry:ui",
+      "title": "Heading Block",
+      "description": "Adds a large heading block for NotebookJS notebooks.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/heading.tsx",
+          "target": "components/notebookjs/blocks/heading.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "highlight-tool",
+      "type": "registry:ui",
+      "title": "Highlight Tool",
+      "description": "Multi-color highlight inline tool for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/highlight/index.tsx",
+          "target": "components/notebookjs/tools/highlight/index.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "image-block",
       "type": "registry:ui",
-      "path": "components/image-block.json"
+      "title": "Image Block",
+      "description": "Image block with upload UI and preview editor for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/image.tsx",
+          "target": "components/notebookjs/blocks/image.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/editors/image/index.tsx",
+          "target": "components/notebookjs/editors/image/index.tsx"
+        }
+      ]
     },
     {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "italic-tool",
+      "type": "registry:ui",
+      "title": "Italic Tool",
+      "description": "Italic inline tool for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/italic/index.tsx",
+          "target": "components/notebookjs/tools/italic/index.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "latex-block",
       "type": "registry:ui",
-      "path": "components/latex-block.json"
+      "title": "LaTeX Block",
+      "description": "Math-focused NotebookJS block with KaTeX preview and editor dialog.",
+      "dependencies": [
+        "katex"
+      ],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/latex.tsx",
+          "target": "components/notebookjs/blocks/latex.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/editors/latex/index.tsx",
+          "target": "components/notebookjs/editors/latex/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/ui/accordion.tsx",
+          "target": "components/notebookjs/ui/accordion.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/ui/textarea.tsx",
+          "target": "components/notebookjs/ui/textarea.tsx"
+        }
+      ]
     },
     {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "link-tool",
+      "type": "registry:ui",
+      "title": "Link Tool",
+      "description": "Link inline tool with click-to-open behavior for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/link/index.tsx",
+          "target": "components/notebookjs/tools/link/index.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "notebookjs",
+      "type": "registry:ui",
+      "title": "NotebookJS Base",
+      "description": "Core NotebookJS component with paragraph block, bold tool, and editor shell.",
+      "dependencies": [
+        "clsx",
+        "draft-js",
+        "immutable",
+        "lucide-react",
+        "react",
+        "react-dom",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/index.tsx",
+          "target": "components/notebookjs/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/types.ts",
+          "target": "components/notebookjs/types.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/context.tsx",
+          "target": "components/notebookjs/context.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/data/block.ts",
+          "target": "components/notebookjs/data/block.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/data/const.ts",
+          "target": "components/notebookjs/data/const.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/utils/actions.ts",
+          "target": "components/notebookjs/utils/actions.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/utils/cn.ts",
+          "target": "components/notebookjs/utils/cn.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/utils/draft-helpers.ts",
+          "target": "components/notebookjs/utils/draft-helpers.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/utils/errors.ts",
+          "target": "components/notebookjs/utils/errors.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/utils/ids.ts",
+          "target": "components/notebookjs/utils/ids.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/utils/keycode.ts",
+          "target": "components/notebookjs/utils/keycode.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/utils/reducer.ts",
+          "target": "components/notebookjs/utils/reducer.ts"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/components/notebook-block/index.tsx",
+          "target": "components/notebookjs/components/notebook-block/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/components/block-type/index.tsx",
+          "target": "components/notebookjs/components/block-type/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/components/menu-bar/index.tsx",
+          "target": "components/notebookjs/components/menu-bar/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/components/editor/index.tsx",
+          "target": "components/notebookjs/components/editor/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/components/base-text-editor/index.tsx",
+          "target": "components/notebookjs/components/base-text-editor/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/components/inline-toolbar/index.tsx",
+          "target": "components/notebookjs/components/inline-toolbar/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/components/tool-item/index.tsx",
+          "target": "components/notebookjs/components/tool-item/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/paragraph.tsx",
+          "target": "components/notebookjs/blocks/paragraph.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/bold/index.tsx",
+          "target": "components/notebookjs/tools/bold/index.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "ordered-list-block",
       "type": "registry:ui",
-      "path": "components/ordered-list-block.json"
+      "title": "Ordered List Block",
+      "description": "Numbered list block with indentation controls and numbering editor.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/ordered-list.tsx",
+          "target": "components/notebookjs/blocks/ordered-list.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/editors/set-numbering/index.tsx",
+          "target": "components/notebookjs/editors/set-numbering/index.tsx"
+        }
+      ]
     },
     {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "paragraph-block",
+      "type": "registry:ui",
+      "title": "Paragraph Block",
+      "description": "Default paragraph block for NotebookJS notebooks.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/paragraph.tsx",
+          "target": "components/notebookjs/blocks/paragraph.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "subheading-block",
+      "type": "registry:ui",
+      "title": "Subheading Block",
+      "description": "Secondary heading block for NotebookJS notebooks.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/subheading.tsx",
+          "target": "components/notebookjs/blocks/subheading.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "subscript-tool",
+      "type": "registry:ui",
+      "title": "Subscript Tool",
+      "description": "Subscript inline tool for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/subscript/index.tsx",
+          "target": "components/notebookjs/tools/subscript/index.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "superscript-tool",
+      "type": "registry:ui",
+      "title": "Superscript Tool",
+      "description": "Superscript inline tool for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/superscript/index.tsx",
+          "target": "components/notebookjs/tools/superscript/index.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "table-block",
+      "type": "registry:ui",
+      "title": "Table Block",
+      "description": "NotebookJS table block with the interactive table editor and toolbar icons.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/table.tsx",
+          "target": "components/notebookjs/blocks/table.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/editors/table/index.tsx",
+          "target": "components/notebookjs/editors/table/index.tsx"
+        },
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/ui/icon.tsx",
+          "target": "components/notebookjs/ui/icon.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "underline-tool",
+      "type": "registry:ui",
+      "title": "Underline Tool",
+      "description": "Underline inline tool for NotebookJS.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/tools/underline/index.tsx",
+          "target": "components/notebookjs/tools/underline/index.tsx"
+        }
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "unordered-list-block",
       "type": "registry:ui",
-      "path": "components/unordered-list-block.json"
+      "title": "Unordered List Block",
+      "description": "Bullet list block for NotebookJS notebooks.",
+      "dependencies": [],
+      "registryDependencies": [
+        "notebookjs"
+      ],
+      "files": [
+        {
+          "type": "registry:component",
+          "path": "components/notebookjs/blocks/unordered-list.tsx",
+          "target": "components/notebookjs/blocks/unordered-list.tsx"
+        }
+      ]
     }
   ]
 }

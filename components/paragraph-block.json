@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "paragraph-block",
+  "type": "registry:ui",
+  "title": "Paragraph Block",
+  "description": "Default paragraph block for NotebookJS notebooks.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "path": "components/notebookjs/blocks/paragraph.tsx",
+      "target": "components/notebookjs/blocks/paragraph.tsx",
+      "content": "import React, { forwardRef } from \"react\";\nimport BaseTextEditor from \"../components/base-text-editor\";\n\nconst ParagraphBlock = forwardRef<any, any>(function (\n  { id = \"\", readOnly = false, data = {}, props = {}, tools = [], references = { search: () => {}, open: () => {} }, shortcuts = [], dispatcher = () => {} },\n  ref,\n) {\n  return (\n    <div className=\"flex-grow mx-2 cursor-text relative py-0.5\">\n      <BaseTextEditor\n        id={id}\n        iText={data.text || \"\"}\n        iInlineStyles={data.inlineStyles || []}\n        blockType={ParagraphBlock}\n        placeholder=\"Type paragraph text....\"\n        references={references}\n        readOnly={readOnly}\n        shortcuts={shortcuts}\n        props={props}\n        ref={ref}\n      />\n    </div>\n  );\n});\n\n(ParagraphBlock as any).label = \"Paragraph\";\n(ParagraphBlock as any).icon = \"P\";\n(ParagraphBlock as any).type = \"paragraph\";\n(ParagraphBlock as any).shortcut = \"Cmd+P\";\n(ParagraphBlock as any).init = () => ({ text: \"\", inlineStyles: [] });\n(ParagraphBlock as any).menuItems = [];\n(ParagraphBlock as any).followingBlock = \"paragraph\";\n\nexport default ParagraphBlock as any;\n"
+    }
+  ]
+}

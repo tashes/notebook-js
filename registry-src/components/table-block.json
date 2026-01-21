@@ -1,0 +1,22 @@
+{
+  "name": "table-block",
+  "type": "registry:ui",
+  "title": "Table Block",
+  "description": "NotebookJS table block with the interactive table editor and toolbar icons.",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/table.tsx",
+      "source": "src/components/notebookjs/blocks/table.tsx"
+    },
+    {
+      "path": "components/notebookjs/editors/table/index.tsx",
+      "source": "src/components/notebookjs/editors/table/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/ui/icon.tsx",
+      "source": "src/components/notebookjs/ui/icon.tsx"
+    }
+  ]
+}

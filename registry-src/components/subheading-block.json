@@ -1,0 +1,14 @@
+{
+  "name": "subheading-block",
+  "type": "registry:ui",
+  "title": "Subheading Block",
+  "description": "Secondary heading block for NotebookJS notebooks.",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/subheading.tsx",
+      "source": "src/components/notebookjs/blocks/subheading.tsx"
+    }
+  ]
+}

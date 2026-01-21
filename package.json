@@ -31,7 +31,8 @@
         "dev": "vite",
         "build": "vite build",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "build:registry": "node scripts/build-registry.mjs"
     },
     "dependencies": {
         "@excalidraw/excalidraw": "^0.18.0",

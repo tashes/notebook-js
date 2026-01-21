@@ -1,12 +1,19 @@
 {
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "unordered-list-block",
   "type": "registry:ui",
+  "title": "Unordered List Block",
+  "description": "Bullet list block for NotebookJS notebooks.",
   "dependencies": [],
-  "registryDependencies": ["notebookjs"],
+  "registryDependencies": [
+    "notebookjs"
+  ],
   "files": [
     {
+      "type": "registry:component",
       "path": "components/notebookjs/blocks/unordered-list.tsx",
-      "source": "src/components/notebookjs/blocks/unordered-list.tsx"
+      "target": "components/notebookjs/blocks/unordered-list.tsx",
+      "content": "import React, { forwardRef } from \"react\";\nimport BaseTextEditor from \"../components/base-text-editor\";\n\nconst BULLET_CHARACTERS = [\"•\", \"◦\", \"⦿\", \"⦾\", \"⁃\", \"‣\"];\nconst MAX_INDENT = 6;\n\nconst UnorderedListBlock = forwardRef<any, any>(function (\n  { id = \"\", readOnly = false, data = {}, props = {}, tools = [], references = { search: () => {}, open: () => {} }, shortcuts = [], dispatcher = () => {} },\n  ref,\n) {\n  const indentation = Math.max(1, (data as any).indentation || 1);\n  const bulletIndex = (indentation - 1) % BULLET_CHARACTERS.length;\n  const bulletCharacter = BULLET_CHARACTERS[bulletIndex];\n  return (\n    <div className=\"flex flex-grow mx-2 cursor-text relative py-0\">\n      <div className={`flex-shrink-0 text-right flex items-baseline justify-end mr-2 select-none`} style={{ marginLeft: `${indentation * 0.5}rem` }}>\n        <span className=\"text-muted-foreground font-mono h-8 flex items-center justify-center\">{bulletCharacter}</span>\n      </div>\n      <div className=\"relative flex-1\">\n        <BaseTextEditor\n          id={id}\n          iText={(data as any).text || \"\"}\n          iInlineStyles={(data as any).inlineStyles || []}\n          blockType={UnorderedListBlock}\n          placeholder=\"Type unordered list text....\"\n          references={references}\n          readOnly={readOnly}\n          shortcuts={shortcuts}\n          props={props}\n          ref={ref}\n        />\n      </div>\n    </div>\n  );\n});\n\n(UnorderedListBlock as any).label = \"Unordered List\";\n(UnorderedListBlock as any).icon = \"UL\";\n(UnorderedListBlock as any).type = \"unordered-list\";\n(UnorderedListBlock as any).shortcut = \"Cmd+U\";\n(UnorderedListBlock as any).init = (prevBlock: any) => {\n  let indentation = 1;\n  if (prevBlock?.type === \"unordered-list\") indentation = prevBlock?.data.indentation;\n  return { text: \"\", inlineStyles: [], indentation };\n};\n(UnorderedListBlock as any).menuItems = [\n  { name: \"Increase Indentation\", shortcut: \"Tab\", action: ({ currentBlock }: any, { modifyBlock }: any) => {\n      const currentIndentation = currentBlock.data.indentation;\n      if (currentIndentation >= MAX_INDENT) return;\n      modifyBlock({ ...currentBlock, data: { ...currentBlock.data, indentation: currentBlock.data.indentation + 1 } });\n    },\n  },\n  { name: \"Decrease Indentation\", shortcut: \"Tab+Shift\", action: ({ currentBlock }: any, { modifyBlock }: any) => {\n      const currentIndentation = currentBlock.data.indentation;\n      if (currentIndentation <= 1) return;\n      modifyBlock({ ...currentBlock, data: { ...currentBlock.data, indentation: currentBlock.data.indentation - 1 } });\n    },\n  },\n];\n(UnorderedListBlock as any).followingBlock = \"unordered-list\";\n\nexport default UnorderedListBlock as any;\n"
     }
   ]
 }

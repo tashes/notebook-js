@@ -1,0 +1,14 @@
+{
+  "name": "paragraph-block",
+  "type": "registry:ui",
+  "title": "Paragraph Block",
+  "description": "Default paragraph block for NotebookJS notebooks.",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/paragraph.tsx",
+      "source": "src/components/notebookjs/blocks/paragraph.tsx"
+    }
+  ]
+}

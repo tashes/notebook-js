@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link-tool",
+  "type": "registry:ui",
+  "title": "Link Tool",
+  "description": "Link inline tool with click-to-open behavior for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "path": "components/notebookjs/tools/link/index.tsx",
+      "target": "components/notebookjs/tools/link/index.tsx",
+      "content": "import { Link } from \"lucide-react\";\nimport React from \"react\";\n\nexport default {\n  component: (props: any) => {\n    const { contentState, entityKey, children } = props;\n    const data = contentState.getEntity(entityKey).getData();\n    function isMacPlatform() {\n      // modern userAgentData\n      if ((navigator as any).userAgentData) return (navigator as any).userAgentData.platform === \"macOS\";\n      return /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);\n    }\n    const handleClick = (e: React.MouseEvent) => {\n      if (isMacPlatform()) {\n        if ((e as any).metaKey) window.open(data.url, data.target || \"_self\");\n      } else {\n        if ((e as any).ctrlKey) window.open(data.url, data.target || \"_self\");\n      }\n    };\n    return (\n      <div className=\"relative group/link inline-block z-10\" onClick={handleClick}>\n        <div className=\"border border-border bg-muted rounded-md px-2 py-1 mx-1 inline-block cursor-pointer hover:bg-accent\">{props.children}</div>\n        <div contentEditable={false} className=\"absolute left-1/2 -translate-x-1/2 mt-2 w-max whitespace-nowrap bg-foreground text-background text-xs px-2 py-1 rounded opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 pointer-events-none\">\n          Left Click + {isMacPlatform() ? \"⌘\" : \"Ctrl\"} to open link\n        </div>\n      </div>\n    );\n  },\n  styles: [{ name: \"LINK\", styles: {} }],\n  constants: [\"NON-PERSISTENT\", \"IMMUTABLE\"],\n  data: (selectedText: string) => ({ url: selectedText, target: \"_self\" }),\n  label: \"Link\",\n  icon: <Link />,\n};\n\n"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "link-tool",
+  "type": "registry:ui",
+  "title": "Link Tool",
+  "description": "Link inline tool with click-to-open behavior for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "path": "components/notebookjs/tools/link/index.tsx",
+      "source": "src/components/notebookjs/tools/link/index.tsx"
+    }
+  ]
+}

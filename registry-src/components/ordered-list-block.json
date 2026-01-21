@@ -1,0 +1,18 @@
+{
+  "name": "ordered-list-block",
+  "type": "registry:ui",
+  "title": "Ordered List Block",
+  "description": "Numbered list block with indentation controls and numbering editor.",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/ordered-list.tsx",
+      "source": "src/components/notebookjs/blocks/ordered-list.tsx"
+    },
+    {
+      "path": "components/notebookjs/editors/set-numbering/index.tsx",
+      "source": "src/components/notebookjs/editors/set-numbering/index.tsx"
+    }
+  ]
+}

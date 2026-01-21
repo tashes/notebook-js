@@ -1,12 +1,19 @@
 {
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "heading-block",
   "type": "registry:ui",
+  "title": "Heading Block",
+  "description": "Adds a large heading block for NotebookJS notebooks.",
   "dependencies": [],
-  "registryDependencies": ["notebookjs"],
+  "registryDependencies": [
+    "notebookjs"
+  ],
   "files": [
     {
+      "type": "registry:component",
       "path": "components/notebookjs/blocks/heading.tsx",
-      "source": "src/components/notebookjs/blocks/heading.tsx"
+      "target": "components/notebookjs/blocks/heading.tsx",
+      "content": "import React, { forwardRef } from \"react\";\nimport BaseTextEditor from \"../components/base-text-editor\";\n\nconst HeadingBlock = forwardRef<any, any>(function (\n    {\n        id = \"\",\n        readOnly = false,\n        data = {},\n        props = {},\n        tools = [],\n        references = { search: () => {}, open: () => {} },\n        shortcuts = [],\n        dispatcher = () => {},\n    },\n    ref,\n) {\n    return (\n        <div className=\"flex-grow mx-2 cursor-text relative py-0.5\">\n            <div className=\"text-2xl font-bold\">\n                <BaseTextEditor\n                    id={id}\n                    iText={data.text || \"\"}\n                    iInlineStyles={data.inlineStyles || []}\n                    blockType={HeadingBlock}\n                    placeholder=\"Type heading text...\"\n                    references={references}\n                    readOnly={readOnly}\n                    shortcuts={shortcuts}\n                    props={props}\n                    ref={ref}\n                />\n            </div>\n        </div>\n    );\n});\n\n(HeadingBlock as any).label = \"Heading\";\n(HeadingBlock as any).icon = \"H\";\n(HeadingBlock as any).type = \"heading\";\n(HeadingBlock as any).shortcut = \"Cmd+H\";\n(HeadingBlock as any).init = () => ({ text: \"\", inlineStyles: [] });\n(HeadingBlock as any).menuItems = [];\n(HeadingBlock as any).followingBlock = \"paragraph\";\n\nexport default HeadingBlock as any;\n"
     }
   ]
 }

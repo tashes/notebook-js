@@ -1,0 +1,14 @@
+{
+  "name": "unordered-list-block",
+  "type": "registry:ui",
+  "title": "Unordered List Block",
+  "description": "Bullet list block for NotebookJS notebooks.",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/unordered-list.tsx",
+      "source": "src/components/notebookjs/blocks/unordered-list.tsx"
+    }
+  ]
+}

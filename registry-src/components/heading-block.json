@@ -1,0 +1,14 @@
+{
+  "name": "heading-block",
+  "type": "registry:ui",
+  "title": "Heading Block",
+  "description": "Adds a large heading block for NotebookJS notebooks.",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/heading.tsx",
+      "source": "src/components/notebookjs/blocks/heading.tsx"
+    }
+  ]
+}

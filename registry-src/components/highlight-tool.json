@@ -1,0 +1,16 @@
+{
+  "name": "highlight-tool",
+  "type": "registry:ui",
+  "title": "Highlight Tool",
+  "description": "Multi-color highlight inline tool for NotebookJS.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "path": "components/notebookjs/tools/highlight/index.tsx",
+      "source": "src/components/notebookjs/tools/highlight/index.tsx"
+    }
+  ]
+}

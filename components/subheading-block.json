@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "subheading-block",
+  "type": "registry:ui",
+  "title": "Subheading Block",
+  "description": "Secondary heading block for NotebookJS notebooks.",
+  "dependencies": [],
+  "registryDependencies": [
+    "notebookjs"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "path": "components/notebookjs/blocks/subheading.tsx",
+      "target": "components/notebookjs/blocks/subheading.tsx",
+      "content": "import React, { forwardRef } from \"react\";\nimport BaseTextEditor from \"../components/base-text-editor\";\n\nconst SubheadingBlock = forwardRef<any, any>(function (\n  { id = \"\", readOnly = false, data = {}, props = {}, tools = [], references = { search: () => {}, open: () => {} }, shortcuts = [], dispatcher = () => {} },\n  ref,\n) {\n  return (\n    <div className=\"flex-grow mx-2 cursor-text relative py-0.5\">\n      <div className=\"text-xl font-semibold text-foreground\">\n        <BaseTextEditor\n          id={id}\n          iText={data.text || \"\"}\n          iInlineStyles={data.inlineStyles || []}\n          blockType={SubheadingBlock}\n          placeholder=\"Type subheading text....\"\n          references={references}\n          readOnly={readOnly}\n          shortcuts={shortcuts}\n          props={props}\n          ref={ref}\n        />\n      </div>\n    </div>\n  );\n});\n\n(SubheadingBlock as any).label = \"Subheading\";\n(SubheadingBlock as any).icon = \"S\";\n(SubheadingBlock as any).type = \"subheading\";\n(SubheadingBlock as any).shortcut = \"Cmd+S\";\n(SubheadingBlock as any).init = () => ({ text: \"\", inlineStyles: [] });\n(SubheadingBlock as any).menuItems = [];\n(SubheadingBlock as any).followingBlock = \"paragraph\";\n\nexport default SubheadingBlock as any;\n"
+    }
+  ]
+}
