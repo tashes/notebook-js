@@ -1,0 +1,16 @@
+{
+  "name": "image-block",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/image.tsx",
+      "source": "src/components/notebookjs/blocks/image.tsx"
+    },
+    {
+      "path": "components/notebookjs/editors/image/index.tsx",
+      "source": "src/components/notebookjs/editors/image/index.tsx"
+    }
+  ]
+}

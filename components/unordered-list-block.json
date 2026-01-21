@@ -1,0 +1,12 @@
+{
+  "name": "unordered-list-block",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/unordered-list.tsx",
+      "source": "src/components/notebookjs/blocks/unordered-list.tsx"
+    }
+  ]
+}

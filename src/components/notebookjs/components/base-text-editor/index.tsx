@@ -176,6 +176,12 @@ const BaseTextEditor = forwardRef<any, Props>(function BaseTextEditor({ id = "",
 
   const handleKeyBinding = useCallback((e: any) => {
     const useCmd = isCmdOS();
+    // Intercept Tab to avoid deprecated onTab path in Draft.js
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const suffix = e.shiftKey ? "Tab+Shift" : "Tab";
+      return KC_CUSTOM_SHORTCUT + ":" + suffix;
+    }
     if (e.key === "Backspace" && (useCmd ? e.metaKey : e.ctrlKey) && e.shiftKey) { e.preventDefault(); return KC_DELETE_BLOCK; }
     if (e.key === "ArrowUp" && (useCmd ? e.metaKey : e.ctrl)) { e.preventDefault(); return KC_MOVE_BLOCK_UP; }
     if (e.key === "ArrowDown" && (useCmd ? e.metaKey : e.ctrl)) { e.preventDefault(); return KC_MOVE_BLOCK_DOWN; }

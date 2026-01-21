@@ -8,8 +8,25 @@ export default function ImageEditor({ data = {}, currentBlock = {}, modifyBlock 
   return (
     <>
       <div className="absolute top-4 right-4 flex space-x-2 z-10">
-        <Button variant="white" className="cursor-pointer" onClick={(e) => { e.stopPropagation(); data.handleSelectImg?.(); }}>Change Image</Button>
-        <Button variant="white" size="icon" className="cursor-pointer" onClick={(e) => { e.stopPropagation(); close(); }}>
+        <Button
+          variant="outline"
+          className="cursor-pointer bg-card text-foreground border-border hover:bg-accent"
+          onClick={(e) => {
+            e.stopPropagation();
+            data.handleSelectImg?.();
+          }}
+        >
+          Change Image
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="cursor-pointer bg-card text-foreground border-border hover:bg-accent"
+          onClick={(e) => {
+            e.stopPropagation();
+            close();
+          }}
+        >
           <X className="w-5 h-5" />
         </Button>
       </div>

@@ -1,0 +1,103 @@
+{
+  "name": "notebookjs",
+  "type": "registry:ui",
+  "dependencies": [
+    "clsx",
+    "draft-js",
+    "immutable",
+    "lucide-react",
+    "react",
+    "react-dom",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [
+    "button",
+    "dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "components/notebookjs/index.tsx",
+      "source": "src/components/notebookjs/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/types.ts",
+      "source": "src/components/notebookjs/types.ts"
+    },
+    {
+      "path": "components/notebookjs/context.tsx",
+      "source": "src/components/notebookjs/context.tsx"
+    },
+    {
+      "path": "components/notebookjs/data/block.ts",
+      "source": "src/components/notebookjs/data/block.ts"
+    },
+    {
+      "path": "components/notebookjs/data/const.ts",
+      "source": "src/components/notebookjs/data/const.ts"
+    },
+    {
+      "path": "components/notebookjs/utils/actions.ts",
+      "source": "src/components/notebookjs/utils/actions.ts"
+    },
+    {
+      "path": "components/notebookjs/utils/cn.ts",
+      "source": "src/components/notebookjs/utils/cn.ts"
+    },
+    {
+      "path": "components/notebookjs/utils/draft-helpers.ts",
+      "source": "src/components/notebookjs/utils/draft-helpers.ts"
+    },
+    {
+      "path": "components/notebookjs/utils/errors.ts",
+      "source": "src/components/notebookjs/utils/errors.ts"
+    },
+    {
+      "path": "components/notebookjs/utils/ids.ts",
+      "source": "src/components/notebookjs/utils/ids.ts"
+    },
+    {
+      "path": "components/notebookjs/utils/keycode.ts",
+      "source": "src/components/notebookjs/utils/keycode.ts"
+    },
+    {
+      "path": "components/notebookjs/utils/reducer.ts",
+      "source": "src/components/notebookjs/utils/reducer.ts"
+    },
+    {
+      "path": "components/notebookjs/components/notebook-block/index.tsx",
+      "source": "src/components/notebookjs/components/notebook-block/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/components/block-type/index.tsx",
+      "source": "src/components/notebookjs/components/block-type/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/components/menu-bar/index.tsx",
+      "source": "src/components/notebookjs/components/menu-bar/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/components/editor/index.tsx",
+      "source": "src/components/notebookjs/components/editor/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/components/base-text-editor/index.tsx",
+      "source": "src/components/notebookjs/components/base-text-editor/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/components/inline-toolbar/index.tsx",
+      "source": "src/components/notebookjs/components/inline-toolbar/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/components/tool-item/index.tsx",
+      "source": "src/components/notebookjs/components/tool-item/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/blocks/paragraph.tsx",
+      "source": "src/components/notebookjs/blocks/paragraph.tsx"
+    },
+    {
+      "path": "components/notebookjs/tools/bold/index.tsx",
+      "source": "src/components/notebookjs/tools/bold/index.tsx"
+    }
+  ]
+}

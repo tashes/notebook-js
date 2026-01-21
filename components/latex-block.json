@@ -1,0 +1,24 @@
+{
+  "name": "latex-block",
+  "type": "registry:ui",
+  "dependencies": ["katex"],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/latex.tsx",
+      "source": "src/components/notebookjs/blocks/latex.tsx"
+    },
+    {
+      "path": "components/notebookjs/editors/latex/index.tsx",
+      "source": "src/components/notebookjs/editors/latex/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/ui/accordion.tsx",
+      "source": "src/components/notebookjs/ui/accordion.tsx"
+    },
+    {
+      "path": "components/notebookjs/ui/textarea.tsx",
+      "source": "src/components/notebookjs/ui/textarea.tsx"
+    }
+  ]
+}

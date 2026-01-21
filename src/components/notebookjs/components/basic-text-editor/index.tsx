@@ -119,10 +119,19 @@ const BasicTextEditor = forwardRef<any, Props>(({ text = "", inlineStyles = [], 
     }
   }, [onChange, styleConstants]);
 
+  // Key binding to avoid deprecated onTab prop path in Draft.js
+  const keyBindingFn = useCallback((e: any) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      return e.shiftKey ? "basic-shift-tab" : "basic-tab";
+    }
+    return undefined as any;
+  }, []);
+
   return (
     <div className="relative">
       <div ref={wrapperRef} className="relative cursor-text">
-        <Editor ref={editorRef as any} readOnly={readOnly} editorState={editorState} onFocus={onFocus} onChange={handleEditorChange} customStyleMap={styleMap} placeholder={placeholder} />
+        <Editor ref={editorRef as any} readOnly={readOnly} editorState={editorState} onFocus={onFocus} onChange={handleEditorChange} customStyleMap={styleMap} placeholder={placeholder} keyBindingFn={keyBindingFn as any} />
       </div>
       {shouldShowInlineToolbar && !readOnly && (
         <InlineToolbar editorState={editorState} tools={tools} onChange={handleEditorChange} />
@@ -132,4 +141,3 @@ const BasicTextEditor = forwardRef<any, Props>(({ text = "", inlineStyles = [], 
 });
 
 export default BasicTextEditor;
-

@@ -1,0 +1,16 @@
+{
+  "name": "ordered-list-block",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/ordered-list.tsx",
+      "source": "src/components/notebookjs/blocks/ordered-list.tsx"
+    },
+    {
+      "path": "components/notebookjs/editors/set-numbering/index.tsx",
+      "source": "src/components/notebookjs/editors/set-numbering/index.tsx"
+    }
+  ]
+}

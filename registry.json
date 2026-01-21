@@ -1,0 +1,41 @@
+{
+  "name": "notebookjs-registry",
+  "homepage": "https://github.com/tashes/notebook-js",
+  "items": [
+    {
+      "name": "notebookjs",
+      "type": "registry:ui",
+      "path": "components/notebookjs.json"
+    },
+    {
+      "name": "heading-block",
+      "type": "registry:ui",
+      "path": "components/heading-block.json"
+    },
+    {
+      "name": "canvas-block",
+      "type": "registry:ui",
+      "path": "components/canvas-block.json"
+    },
+    {
+      "name": "image-block",
+      "type": "registry:ui",
+      "path": "components/image-block.json"
+    },
+    {
+      "name": "latex-block",
+      "type": "registry:ui",
+      "path": "components/latex-block.json"
+    },
+    {
+      "name": "ordered-list-block",
+      "type": "registry:ui",
+      "path": "components/ordered-list-block.json"
+    },
+    {
+      "name": "unordered-list-block",
+      "type": "registry:ui",
+      "path": "components/unordered-list-block.json"
+    }
+  ]
+}

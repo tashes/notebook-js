@@ -1,0 +1,20 @@
+{
+  "name": "canvas-block",
+  "type": "registry:ui",
+  "dependencies": ["@excalidraw/excalidraw"],
+  "registryDependencies": ["notebookjs"],
+  "files": [
+    {
+      "path": "components/notebookjs/blocks/canvas.tsx",
+      "source": "src/components/notebookjs/blocks/canvas.tsx"
+    },
+    {
+      "path": "components/notebookjs/editors/canvas/index.tsx",
+      "source": "src/components/notebookjs/editors/canvas/index.tsx"
+    },
+    {
+      "path": "components/notebookjs/editors/canvas/index.css",
+      "source": "src/components/notebookjs/editors/canvas/index.css"
+    }
+  ]
+}
